@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{margin: 0;}
+        body{
+            background: black;
+            overflow: hidden;
+        }
+        canvas{display:block;-box-shadow: inset 0 0 60px rgba(255,255,255,0.6)}
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+    <script>
+        var oC = document.querySelector('canvas');
+        var cxt = oC.getContext('2d');
+        var w = oC.width = window.innerWidth;
+        var h = oC.height = window.innerHeight;
+
+        var stars = []; // 星星对象
+        var maxStars = 1200;
+        var count = 0;  // 索引值
+        var hue = 217; // 色调
+
+        var oC2 = document.createElement('canvas');
+        var cxt2 = oC2.getContext('2d');
+        oC2.width = 100;
+        oC2.height = 100;
+        var half = oC2.width/2;
+        var gradient2 = cxt2.createRadialGradient(half,half,0,half,half,half); // 径向渐变 x1,y1,r1,x2,y2,r2
+        gradient2.addColorStop(0.025, '#fff');
+        gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)');
+        gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)');
+        gradient2.addColorStop(1, 'transparent');
+
+        cxt2.fillStyle = gradient2;
+        cxt2.beginPath();
+        cxt2.arc(half,half,half,0,2*Math.PI,false);
+        cxt2.fill();
+        //document.body.appendChild(oC2);
+        //console.log( oC2.toDataURL() )
+        var Star = function () {
+            this.orbitRadius = random(maxOrbit(w,h)); // 轨道半径
+            this.radius =  random(60,this.orbitRadius)/12;  // 星星半径
+            this.orbitX = w/2;  // 轨道X
+            this.orbitY = h/2; // 轨道Y
+            this.timePassed = random(0,maxStars); // 随着时间推移，速度要累加
+            this.speed = random(this.orbitRadius) / 900000;
+            this.alpha = random(2,10)/10; // 星星的透明度
+
+            count ++;
+            stars[count] = this; // 注意: 第一次调用时 count = 0+1了,所以stars[1] = this;
+        }
+        Star.prototype.draw = function () {
+            var x = Math.sin(this.timePassed)*this.orbitRadius+this.orbitX;
+            var y = Math.cos(this.timePassed)*this.orbitRadius+this.orbitY;
+
+            cxt.globalAlpha = this.alpha;
+            // 复制oC2的图像到 oC画布上
+            /*
+                var img = new Image();
+                img.src = oC2.toDataURL();
+                img.onload = function () {
+                    //console.log( this )
+                    cxt.drawImage(img,500,100,50,50);
+                }
+            */
+
+            // 星星闪烁
+            var Twinkle = random(10);
+            if( Twinkle ===1 && this.alpha >0 ){
+                this.alpha -=0.05;
+            }else if( Twinkle === 2 && this.alpha<1 ){
+                this.alpha += 0.05;
+            }
+
+            cxt.drawImage(oC2,x-this.radius/2,y-this.radius/2,this.radius,this.radius);
+            this.timePassed += this.speed;
+        }
+
+        play();
+        function play() {
+
+            cxt.clearRect( 0,0,w,h );
+            for( var i=1;i<stars.length;i++ ){
+                // 注意: 第一次调用时 count = 0+1了,所以stars[1] = this;
+                // 所以 i要从1开始
+                //console.log(stars[i]);
+                stars[i].draw();
+            };
+            requestAnimationFrame(play)
+        }
+        
+        
+        
+        for( var i=0;i<maxStars;i++){
+            new Star(); // 创建1200个星星对象
+        }
+
+        for( var i=0;i<50;i++ ){
+            //console.log( random(10) );
+        }
+        function random(min,max) { // min<=n<=max
+            if( arguments.length < 2 ){
+                max = min;
+                min = 0;
+            }
+            if( min > max ){
+                var h = max;
+                max = min;
+                min = h;
+            }
+            return Math.floor( Math.random()*(max-min+1) )+min;
+        }
+
+
+        // 最大的轨道半径
+        function maxOrbit(x,y) {
+            var max = Math.max(x,y);
+            var diameter = Math.round( Math.sqrt( max*max + max*max ) );
+            return (diameter/2);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

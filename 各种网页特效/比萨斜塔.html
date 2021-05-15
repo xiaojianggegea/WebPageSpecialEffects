@@ -1,0 +1,391 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  *,
+*:after,
+*:before {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #d7f7ff;
+}
+.tower {
+  width: 30vh;
+  height: 90vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-transform: rotate(0);
+          transform: rotate(0);
+  top: 0;
+  position: relative;
+  -webkit-animation: boom 5s linear forwards;
+          animation: boom 5s linear forwards;
+}
+.tower__balcony {
+  width: 90%;
+  height: 4%;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-top: 0.9vh solid #584b36;
+}
+.tower__balcony div {
+  width: 0.9vh;
+  height: 100%;
+  background: #584b36;
+}
+.tower__balcony div:nth-child(even) {
+  width: 1.2vh;
+  height: 200%;
+  border-radius: 20% 20% 0 0;
+}
+.tower__balcony div:nth-child(6) {
+  height: 450%;
+  border-radius: 0;
+}
+.tower__handrail {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  bottom: 15%;
+  left: -10%;
+  width: 120%;
+  height: 23%;
+  z-index: 2;
+  border-top: 0.9vh solid #584b36;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+.tower__handrail div {
+  width: 0.9vh;
+  height: 200%;
+  background: #584b36;
+  border-radius: 30% 30% 0 0;
+}
+.tower__handrail div:nth-child(3) {
+  margin: 0 2.4vh;
+}
+.tower__roof {
+  width: 90%;
+  height: 15%;
+  margin: 0 auto;
+  background: -webkit-gradient(linear, left top, right top, color-stop(50%, #f8e3c2), color-stop(50%, #f1c785));
+  background: linear-gradient(left, #f8e3c2 50%, #f1c785 50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  position: relative;
+  border: 0.9vh solid #584b36;
+  border-bottom: none;
+}
+.tower__roof:after {
+  content: "";
+  position: absolute;
+  width: 135%;
+  height: 30%;
+  background: -webkit-gradient(linear, right top, left top, from(#f8e3c2), to(#f1c785));
+  background: linear-gradient(right, #f8e3c2, #f1c785);
+  left: 50%;
+  bottom: -10%;
+  z-index: 1;
+  -webkit-transform: translate3d(-50%, 0, 0);
+          transform: translate3d(-50%, 0, 0);
+  border: 0.9vh solid #584b36;
+  border-radius: 9vh;
+}
+.tower__roof-door {
+  width: 23%;
+  height: 80%;
+  border-radius: 50% 50% 0 0;
+  background-color: #c9a772;
+  border: 0.9vh solid #584b36;
+  border-bottom: none;
+}
+.tower__roof-door:nth-child(2) {
+  width: 25%;
+  height: 70%;
+}
+.tower__bottom {
+  width: 100%;
+  height: 20%;
+  background: #f1c785;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  border: 0.9vh solid #584b36;
+  border-top: none;
+}
+.tower__door {
+  width: 27%;
+  height: 80%;
+  border-radius: 50% 50% 0 0/30% 30% 0 0;
+  background: #c9a772;
+  border: 0.9vh solid #584b36;
+  border-bottom: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 5% 0;
+}
+.tower__door-stick {
+  background: #564a35;
+  height: 100%;
+}
+.tower__door-stick:nth-child(1) {
+  width: 16%;
+}
+.tower__door-stick:nth-child(2) {
+  width: 28%;
+}
+.tower__door-stick:nth-child(3) {
+  width: 26%;
+}
+.tower__door-stick-container {
+  width: 100%;
+  height: 3%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+.tower__floor {
+  width: 100%;
+  height: 13%;
+  background: #f1c785;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  position: relative;
+  border: 0.9vh solid #584b36;
+  border-top: none;
+  border-bottom: none;
+}
+.tower__floor:after {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 30%;
+  background: -webkit-gradient(linear, left top, right top, from(#f8e3c2), to(#f1c785));
+  background: linear-gradient(left, #f8e3c2, #f1c785);
+  left: 50%;
+  bottom: -10%;
+  z-index: 1;
+  -webkit-transform: translate3d(-50%, 0, 0);
+          transform: translate3d(-50%, 0, 0);
+  border: 0.9vh solid #584b36;
+  border-radius: 9vh;
+}
+.tower__window {
+  width: 13%;
+  height: 75%;
+  background: #c9a772;
+  border: 0.9vh solid #584b36;
+  border-bottom: none;
+  border-radius: 50% 50% 0 0/20% 20% 0 0;
+}
+.flag {
+  position: absolute;
+  left: 52%;
+  top: -0.5%;
+  width: 6vh;
+  height: 4.5vh;
+  background: -webkit-gradient(linear, left top, right top, color-stop(33%, #009246), color-stop(33%, #fff), color-stop(66%, #fff), color-stop(66%, #ce2b37));
+  background: linear-gradient(to right, #009246 33%, #fff 33%, #fff 66%, #ce2b37 66%);
+}
+@-webkit-keyframes boom {
+  100% {
+    -webkit-transform: rotate(10deg);
+            transform: rotate(10deg);
+    top: 5%;
+  }
+}
+@keyframes boom {
+  100% {
+    -webkit-transform: rotate(10deg);
+            transform: rotate(10deg);
+    top: 5%;
+  }
+}
+
+  </style>
+ </HEAD>
+
+ <BODY>
+<div class="tower">
+  <div class="tower__balcony"><span class="flag"></span>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="tower__roof">
+    <div class="tower__roof-door"></div>
+    <div class="tower__roof-door"></div>
+    <div class="tower__roof-door"></div>
+    <div class="tower__handrail">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <div class="tower__floor">
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+  </div>
+  <div class="tower__floor">
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+  </div>
+  <div class="tower__floor">
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+  </div>
+  <div class="tower__floor">
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+    <div class="tower__window"></div>
+  </div>
+  <div class="tower__bottom">
+    <div class="tower__door">
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+    </div>
+    <div class="tower__door">
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+    </div>
+    <div class="tower__door">
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+      <div class="tower__door-stick-container">
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+        <div class="tower__door-stick"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script></script>
+ </BODY>
+</HTML>

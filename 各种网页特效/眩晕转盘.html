@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>body{
+	margin:0px;
+	padding:0px;
+	background-color: #111;
+	overflow: hidden;
+}
+
+canvas{
+	padding:0px;
+	margin: calc(50vh - 600px) calc(50vw - 600px);
+	animation: rot 60s linear infinite;
+}
+
+@keyframes rot {
+	0% {
+		transform: rotate(0deg);
+	} 100% {
+		transform: rotate(360deg);
+	}
+}</style>
+ </HEAD>
+
+ <BODY>
+
+  <script>/* I think there's a similar pen somewhere else, but I wasn't able to find it 
+
+* UPDATE - Godje sent me his similar pen:
+https://codepen.io/Godje/post/spinning-stars-mechanics
+*/
+
+let ctx, thetas = [];
+const w = 1200, h = 1200, TAU = 2*Math.PI, MAX_R = 600;
+const mw = parseInt(w/2), mh = parseInt(h/2);
+
+const colors = ["#00204a22","#00579222","#00bbf022","#fdb44b22"];
+
+function setup(){
+	let r, canvas = document.createElement('canvas');
+	canvas.width = w;
+	canvas.height = h;
+	document.body.appendChild(canvas);
+	ctx = canvas.getContext('2d');
+
+	for(r = 1; r < MAX_R; r++) thetas[r] = Math.random()*TAU;
+	requestAnimationFrame(draw);
+}
+
+function draw(){
+	let r, p, x, y;
+
+	for(r = 1; r < MAX_R; r++){
+		p = 2*Math.random()*Math.PI/r;
+		thetas[r] += (Math.random() > 0.5) ? p : -p;
+		x = r*Math.cos(thetas[r]);
+		y = r*Math.sin(thetas[r]);
+		
+		ctx.fillStyle = colors[(r) % colors.length];
+		ctx.beginPath();
+    
+		ctx.arc(mw + x, mw + y, 2, 0, TAU, true);
+		ctx.arc(mh - x, mh + y, 2, 0, TAU, true);
+		ctx.fill();
+	}
+	requestAnimationFrame(draw);
+}
+
+window.onload = setup;</script>
+ </BODY>
+</HTML>

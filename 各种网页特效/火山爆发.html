@@ -1,0 +1,449 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  font-family: Helvetica, Arial;
+  color: #ffffff;
+}
+
+body {
+  background: linear-gradient(0deg, #aabbbb, #88aadd);
+}
+
+#stage, #smoke {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#stage {
+  z-index: 20;
+}
+
+#smoke {
+  z-index: 5;
+}
+
+.volcano-container {
+  z-index: 10;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.volcano {
+  position: absolute;
+  border: 380px solid transparent;
+  border-left: 140px solid transparent;
+  border-bottom: 200px solid #240904;
+  width: 0;
+  height: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.volcano.flipped {
+  transform: scaleX(-1);
+}
+
+.lip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 300px;
+  height: 240px;
+  background-color: #240904;
+  border-radius: 200px;
+}
+.lip .lava {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 10px;
+  margin: auto;
+  width: 270px;
+  height: 230px;
+  background-color: #fa7510;
+  border-radius: 200px;
+  clip-path: ellipse(120px 60px at top);
+}
+.lip .mask {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  background-color: #240904;
+  width: 290px;
+  height: 300px;
+}
+
+.toggle {
+  display: none;
+  z-index: 100;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+  </style>
+ </HEAD>
+
+ <BODY>
+ <canvas id="smoke"></canvas>
+<canvas id="stage"></canvas>
+
+<div class="volcano-container">
+  <div class="volcano"></div>
+  <div class="volcano flipped"></div>
+  <div class="lip">
+    <div class="lava"></div>
+    <div class="mask"></div>
+  </div>
+</div>
+
+<div class="toggle">
+  <label for="awesome">
+    <input type="checkbox" id="awesome" /> <strong>AWESOME MODE</strong>
+  </label>
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+  var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// Best viewed in Chrome
+
+//=============================
+// Consts
+//=============================
+var MAX_WIDTH = 12;
+var FPS = 60;
+
+//=============================
+// Helpers
+//=============================
+var getTimestamp = function getTimestamp() {
+  return new Date().getTime();
+};
+
+var random = function random() {
+  var max = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  var signed = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  return signed ? (Math.random() - 0.5) * 2 * max : Math.random() * max;
+};
+
+var getPower = function getPower() {
+  var power = (getTimestamp() - mouseStart) / 150;
+  return power > 30 ? 30 : power;
+};
+
+var shakeVolcano = function shakeVolcano(power) {
+  $volcano.css({
+    left: random(power, true),
+    bottom: -1 * random(power)
+  });
+
+  $lava.css({
+    left: random(power, true),
+    top: 10 + random(power) / 2,
+    width: random(power) + 260
+  });
+};
+
+//=============================
+// Main
+//=============================
+var targetDelta = 1000 / FPS;
+
+var stage = document.getElementById('stage');
+var ctx = stage.getContext('2d');
+var smoke = document.getElementById('smoke');
+var ctx2 = smoke.getContext('2d');
+
+var particles = [];
+
+var AWESOME_MODE = false;
+var mouseDown = false;
+var isExploding = false;
+var stageWidth = 0;
+var stageHeight = 0;
+var previousTimestamp = getTimestamp();
+var previousRender = getTimestamp();
+var previousPower = 0;
+var mouseStart = getTimestamp();
+var mouseEnd = getTimestamp();
+
+var $volcano = void 0;
+var $lava = void 0;
+
+var generateParticles = function generateParticles() {
+  var amount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 20;
+  var power = arguments[1];
+
+  for (var i = 0; i < amount; i++) {
+    particles.push(new Particle(power));
+  }
+};
+
+var loop = function loop() {
+
+  if (getTimestamp() - previousTimestamp < targetDelta) {
+    requestAnimationFrame(loop);
+    return;
+  }
+
+  ctx.globalCompositeOperation = 'lighter';
+
+  if (!AWESOME_MODE) {
+    ctx.clearRect(0, 0, stageWidth, stageHeight);
+  }
+
+  ctx2.clearRect(0, 0, stageWidth, stageHeight);
+
+  if (mouseDown) {
+    generateParticles(random(2) + 1, getPower() / 2);
+    shakeVolcano(getPower());
+  }
+
+  if (isExploding && previousPower > 0 && !mouseDown) {
+    shakeVolcano(previousPower);
+    previousPower -= 0.35;
+
+    if (previousPower < 1) {
+      isExploding = false;
+    }
+  }
+
+  // constant particles
+  if (random() < 0.3) {
+    generateParticles(1, 1);
+  }
+
+  // smoke effects
+  if (random() < 0.08) {
+    particles.push(new Smoke());
+  }
+
+  // animate
+  particles.forEach(function (particle) {
+    particle.animate();
+    particle.render();
+  });
+
+  // remove out of bounds particles
+  particles = particles.filter(function (particle) {
+    if (particle instanceof Smoke && particle.y + particle.width > 0) {
+      return true;
+    } else if (particle instanceof Particle && particle.y < stageHeight && particle.x > 0 - particle.width && particle.x < stageWidth + particle.width) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+
+  previousTimestamp = getTimestamp();
+  requestAnimationFrame(loop);
+};
+
+var Particle = function () {
+  function Particle(oPower) {
+    _classCallCheck(this, Particle);
+
+    var power = oPower || random(5);
+
+    this.x = stageWidth / 2 + random(80, true);
+    this.y = stageHeight - 200 + random(20, true);
+
+    this.width = random(MAX_WIDTH) + 1;
+    this.red = Math.floor(210 + this.width * 2);
+    this.green = Math.floor(90 + this.width * 3);
+    this.blue = Math.floor(30 + this.width * 2);
+    this.alpha = 1;
+    this.speed = power / (this.width * 0.13);
+    this.angle = random(45);
+    this.hasBounced = false;
+
+    this.velocityY = Math.abs(Math.sin(this.angle)) * this.speed;
+    this.velocityX = Math.cos(this.angle) * this.speed / 2;
+
+    this.xDirection = this.velocityX > 0;
+
+    if (Math.abs(this.velocityX) > 2) {
+      this.velocityX = this.velocityX / 2;
+    }
+  }
+
+  _createClass(Particle, [{
+    key: 'animate',
+    value: function animate() {
+      this.x -= this.velocityX;
+      this.y -= this.velocityY;
+
+      // add gravity
+      this.velocityY -= this.width / (this.hasBounced ? 170 : 100);
+
+      if (!this.hasBounced && random() < 0.1 && this.y > stageHeight - 150 && this.x > stageWidth / 2 - 180 && this.x < stageWidth / 2 + 180) {
+        this.hasBounced = true;
+        this.velocityX = Math.sin(random(45)) + random(2) * this.xDirection;
+        this.velocityY /= 8;
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var colour = this.getColour();
+
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.width, 0, Math.PI * 2, true);
+      ctx.lineWidth = this.width;
+      ctx.fillStyle = colour;
+      //ctx.shadowBlur = random(20);
+      //ctx.shadowColor = colour;
+      ctx.fill();
+    }
+  }, {
+    key: 'getColour',
+    value: function getColour(red, green, blue, alpha) {
+      return 'rgba(' + (red || this.red) + ', ' + (green || this.green) + ', ' + (blue || this.blue) + ', ' + (alpha || this.alpha) + ')';
+    }
+  }]);
+
+  return Particle;
+}();
+
+var Smoke = function () {
+  function Smoke() {
+    _classCallCheck(this, Smoke);
+
+    this.x = stageWidth / 2 + random(75, true);
+    this.y = stageHeight;
+
+    this.width = random(80) + 50;
+    this.red = 100;
+    this.green = 100;
+    this.blue = 100;
+    this.alpha = random() + 0.3;
+    this.speed = random(2) + 1;
+  }
+
+  _createClass(Smoke, [{
+    key: 'animate',
+    value: function animate() {
+      //this.x += random(2, true);
+      this.y -= this.speed;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var colour = this.getColour();
+
+      ctx2.beginPath();
+      ctx2.arc(this.x, this.y, this.width, 0, Math.PI * 2, true);
+      ctx2.lineWidth = this.width;
+      ctx2.fillStyle = colour;
+      ctx2.fill();
+    }
+  }, {
+    key: 'getColour',
+    value: function getColour(red, green, blue, alpha) {
+      return 'rgba(' + (red || this.red) + ', ' + (green || this.green) + ', ' + (blue || this.blue) + ', ' + (alpha || this.alpha) + ')';
+    }
+  }]);
+
+  return Smoke;
+}();
+
+//=============================
+// Setup
+//=============================
+
+var updateCanvasSize = function updateCanvasSize() {
+  stageWidth = window.innerWidth;
+  stageHeight = window.innerHeight;
+
+  stage.width = stageWidth;
+  stage.height = stageHeight;
+
+  smoke.width = stageWidth;
+  smoke.height = stageHeight;
+
+  particles = [];
+};
+
+$(window).on('mousedown', function (e) {
+  mouseStart = getTimestamp();
+  mouseDown = true;
+
+  if (AWESOME_MODE) {
+    particles = [];
+    ctx.clearRect(0, 0, stageWidth, stageHeight);
+  }
+});
+
+$(window).on('mouseup', function (e) {
+  var power = getPower();
+
+  isExploding = true;
+  mouseDown = false;
+  mouseEnd = getTimestamp();
+  previousPower = power;
+
+  generateParticles((random(16) + 30) * power, power / 1.1);
+
+  setTimeout(function () {
+    generateParticles(14 * power, power / 1.4);
+  }, 100);
+
+  setTimeout(function () {
+    generateParticles(6 * power, power / 2);
+  }, 200);
+
+  setTimeout(function () {
+    generateParticles(4 * power, power / 2);
+  }, 400);
+});
+
+updateCanvasSize();
+$(window).on('resize', updateCanvasSize);
+
+$(function () {
+  $volcano = $('.volcano-container');
+  $lava = $volcano.find('.lava');
+
+  setTimeout(function () {
+    $('.toggle').fadeIn();
+  }, 6000);
+
+  $('.toggle').on('click', function () {
+    AWESOME_MODE = $('#awesome').is(':checked');
+  });
+});
+
+//=============================
+// Run it!
+//=============================
+
+generateParticles(200, 8);
+loop();
+  </script>
+ </BODY>
+</HTML>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+<title>Reactor 2</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<script id="vertexShader">
+precision mediump float;
+precision mediump int;
+uniform mat4 modelViewMatrix; // optional
+uniform mat4 projectionMatrix; // optional
+attribute vec3 position;
+attribute vec4 color;
+varying vec3 vPosition;
+varying vec4 vColor;
+void main()	{
+vPosition = position;
+vColor = color;
+gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1);
+}
+</script>
+<script id="fragmentShader">
+precision mediump float;
+precision mediump int;
+uniform float time;
+varying vec3 vPosition;
+varying vec4 vColor;
+void main()	{
+vec4 color = vec4( vColor.rgb,0.4 );
+color.r = 0.98754;
+color.g = 0.253;
+color.b = 0.1;
+color.a += sin( vPosition.x * 2.0 + time );
+gl_FragColor = sin(color);
+}
+</script>
+<script src='js/three.min.js'></script>
+<script src='js/postprocessing.min.js'></script>
+<script  src="js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  body {
+  overflow: hidden;
+  background: #fff;
+}
+
+.flame {
+  cursor: pointer;
+  outline: 0 solid transparent;
+  text-transform: uppercase;
+  width: 12vh;
+  overflow: hidden;
+}
+
+.fire-text {
+  color: #fff;
+  height: auto;
+  font-family: sans-serif;
+  font-size: 12vh;
+  padding-top: 4vh;
+  text-align: center;
+  transition: all 80ms linear;
+  -webkit-transition: all 80ms linear;
+  -moz-transition: all 80ms linear;
+  -o-transition: all 80ms linear;
+  -webkit-filter: blur(2px);
+}
+
+.fire-text div {
+  display: inline-block;
+}
+
+.wick {
+  width: 2px;
+  height: 3vh;
+  background: #444;
+  left: 50%;
+  margin-left: -0.3vh;
+  margin-top: -3vh;
+  position: relative;
+  z-index: -1;
+}
+
+.candle-body {
+  width: 4vh;
+  height: 30vh;
+  position: relative;
+  left: 50%;
+  margin-left: -2vh;
+}
+
+.c-r {
+  background: #CE1836;
+}
+
+.c-o {
+  background: #F85931;
+}
+
+.c-y {
+  background: #EDB92E;
+}
+
+.c-g {
+  background: #A3A948;
+}
+
+.c-b {
+  background: #009989;
+}
+
+.c-p {
+  background: #492D61;
+}
+
+.c-k {
+  background: #EE9BA9;
+}
+
+.c-wrap {
+  float: left;
+  margin: 0 1vh;
+}
+
+.arrow_box {
+  position: relative;
+  background: #666666;
+  border: 0.5vh solid #dadada;
+  color: #dadada;
+  padding: 2vh;
+  font-family: sans-serif;
+  font-size: 4vh;
+  display: inline-block;
+  opacity: 0.8;
+}
+
+.arrow_box:after, .arrow_box:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.arrow_box:after {
+  border-color: rgba(102, 102, 102, 0);
+  border-bottom-color: #666666;
+  border-width: 3vh;
+  margin-left: -3vh;
+}
+
+.arrow_box:before {
+  border-color: rgba(218, 218, 218, 0);
+  border-bottom-color: #dadada;
+  border-width: 3vh;
+  margin-left: -3vh;
+}
+  </style>
+ </HEAD>
+
+ <BODY>
+  <div id="fire_msg" class="fire-text" contenteditable="true">HAPPY &nbsp; BIRTHDAY &nbsp; TIM</div>
+
+<div id="instructions" style="display: table; margin: 0 auto;">
+<div class="arrow_box">This fire text is editable</div>
+</div>
+
+<div id="cool" style="display: table; margin: 0 auto;">
+<div class="arrow_box">Uwonga! &nbsp; That is pretty neat-o!<br/>Hope you have a wonderful day.</div>
+</div>
+
+<div style="display: table; margin: 0 auto;">
+<div class="c-wrap"><div id="c0" class="fire-text flame" contenteditable="true">&#9830;</div><div class="wick"></div><div class="candle-body c-r"></div></div>
+<div class="c-wrap"><div id="c1" class="fire-text flame" contenteditable="true">&#9830;</div><div class="wick"></div><div class="candle-body c-o"></div></div>
+<div class="c-wrap"><div id="c2" class="fire-text flame" contenteditable="true">&#9830;</div><div class="wick"></div><div class="candle-body c-y"></div></div>
+<div class="c-wrap"><div id="c3" class="fire-text flame" contenteditable="true">&#9830;</div><div class="wick"></div><div class="candle-body c-g"></div></div>
+<div class="c-wrap"><div id="c4" class="fire-text flame" contenteditable="true">&#9830;</div><div class="wick"></div><div class="candle-body c-b"></div></div>
+<div class="c-wrap"><div id="c5" class="fire-text flame" contenteditable="true">&#9830;</div><div class="wick"></div><div class="candle-body c-p"></div></div>
+  <div class="c-wrap"><div id="c6" class="fire-text flame" contenteditable="true">&#9830;</div><div class="wick"></div><div class="candle-body c-k"></div></div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script>
+var flameChar = '&#9830;';
+
+var isInstructed = false;
+var iTim = setTimeout(function(){$("#instructions").fadeIn(3000);},5000);
+
+setTimeout(function () { 
+  $('.flame').fadeTo(2000,0.1,function () {
+    swapFlames(['H','E','R','B','E','R','T']);
+    $('.flame').fadeTo(2000,0.9);
+  });
+}, 3000);
+
+$(document).ready( function () {
+  $("#instructions").hide();
+  $("#cool").hide();
+
+  wrapCharacters($('.fire-text'));
+
+  setInterval(flicker, 80);
+
+  $("#fire_msg").blur(function () {
+    wrapCharacters($(this));
+    if (!isInstructed) {
+      clearTimeout(iTim);
+      $("#instructions").hide();
+      $("#cool").fadeIn(1200);
+      setTimeout(function(){$("#cool").fadeOut(800);},3000);
+      isInstructed = true;
+    }
+  });
+
+  $('.flame').keyup(function(e){ check_charcount(e,$(this)); });
+  $('.flame').keydown(function(e){ check_charcount(e,$(this)); });
+
+  $('.flame').click(function () { document.execCommand('selectAll', false, null); });
+});
+
+function check_charcount(e, can)
+{
+  checkHex();
+
+  if (!isInstructed) {
+    clearTimeout(iTim);
+    $("#instructions").fadeOut(1200);
+    isInstructed = true;
+  }
+
+  if(e.which != 8 && can.text().length > 1)
+  {
+    can.text(can.text().substring(0, 1));
+    wrapCharacters(can);
+    e.preventDefault();
+  }
+
+  if (e.which == 8 || e.which == 46) {
+    var allOut = true;
+    $(".flame").each(function () {
+      if ($(this).text() != "") {
+        allOut = false;
+      }
+    });
+
+    if (allOut) { swapFlames([flameChar,flameChar,flameChar,flameChar,flameChar,flameChar,flameChar]);
+                }
+  }
+}
+
+
+function checkHex() {
+  if ($('#c0').text() == "#") {
+    var cc = 
+        $('#c0').text() +
+        $('#c1').text() +
+        $('#c2').text() +
+        $('#c3').text() +
+        $('#c4').text() +
+        $('#c5').text() +
+        $('#c6').text();
+    $(".candle-body").css("background",cc);
+  }
+  else {
+    var ca = ['#CE1836','#F85931','#EDB92E','#A3A948','#009989','#492D61','#EE9BA9'];
+    $(".candle-body").each(function (i) {
+      $(this).css("background",ca[i]);
+    });
+  }
+}
+
+function wrapCharacters(element) {
+  $(element).contents().each(function() {
+    if(this.nodeType === 1) {
+      wrapCharacters(this);
+    }
+    else if(this.nodeType === 3) {
+      $(this).replaceWith($.map(this.nodeValue.split(''), function(c) {
+        return '<div>' + c + '</div>';
+      }).join(''));
+    }
+    $('.fire-text div').each(function(){$(this).attr("y_pos","0");});
+  });
+}
+
+function swapFlames(ln) {
+  for(var i=0; i < ln.length; i++) {
+    $('#c'+i).html(ln[i]);
+  }
+  wrapCharacters($('.flame'));
+}
+
+function flicker() {
+  $('.fire-text div').each(function(){
+    var x = parseFloat($(this).attr("x_pos"));
+    var y = parseFloat($(this).attr("y_pos"));
+
+    if ($(this).attr("data-up") == "1") {
+      y += getVariance(1,2);
+      if (y > 10) { $(this).attr("data-up", "0"); }
+    }
+    else {
+      y -= getVariance(3,5);
+      if (y < 2) { $(this).attr("data-up", "1"); }
+    }
+
+    $(this).attr("y_pos", y);
+
+    var yO = 1/(10/(y+1));
+    var yB = yO * (yO * getVariance(10,20));
+
+    var ts = "0px 0px " + Math.floor(getVariance(30,50)) + "px #fff, " + 
+        getShake() + "1px -" + (Math.floor(getVariance(1,y)) + 30) + "px " + getVariance(40,90) + "px rgba(200,200,200,"+yO+"), " + 
+        getShake() + Math.floor(y/5) + "px -" + y + "px " + yB + "px rgba(255,200,60,"+yO+"), " + 
+        getShake() + Math.floor(y/7) + "px -" + y + "px " + yB + "px rgba(210,180,20,"+yO+")";
+    $(this).css("-webkit-text-shadow", ts);
+    $(this).css("-moz-text-shadow", ts);
+    $(this).css("-ms-text-shadow", ts);
+    $(this).css("-text-shadow", ts);
+    $(this).css("text-shadow", ts);
+
+    var cl = 'rgba('+Math.floor(getVariance(240,250))+','+Math.floor(getVariance(160,180))+',0,'+getVariance(0.5,0.9)+')';
+    $(this).css('color', cl);
+
+    var mx = 'matrix(' + getVariance(0.98, 1.02) + 
+        ', ' + getVariance(-0.02, 0.02) + 
+        ', ' + getVariance(-0.02, 0.02) + 
+        ', ' + getVariance(0.98, 1.02) + 
+        ', ' + Math.floor(getVariance(-1, 1)) + 
+        ', ' + Math.floor(getVariance(-1, 1)) + 
+        ')';
+    $(this).css('-webkit-transform', mx);
+    $(this).css('-moz-transform', mx);
+    $(this).css('-ms-transform', mx);
+    $(this).css('-transform', mx);
+    $(this).css('transform', mx);
+  });
+}
+
+function getVariance(min,max) {
+  return Math.random() * (max - min) + min;
+}
+
+function getShake() {
+  return (Math.random() > 0.5) ? "-" : "";
+}
+
+
+</script>
+ </BODY>
+</HTML>

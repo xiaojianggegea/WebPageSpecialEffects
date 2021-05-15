@@ -1,0 +1,375 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>.dark_blue {
+  background: #3d5a80;
+}
+.blue {
+  background: #98c1d9;
+}
+.light_blue {
+  background: #e0fbfc;
+}
+.red {
+  background: #ee6c4d;
+}
+.dark {
+  background: #293241;
+}
+body {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  background: #000;
+}
+.city {
+  background: #293241;
+  height: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.361)), to(#1b1318));
+}
+.embankment {
+  height: 3%;
+  position: absolute;
+  bottom: 47%;
+  width: 100%;
+  background: #293241;
+}
+.house {
+  position: absolute;
+  bottom: 0;
+  box-shadow: 0 0 5px #000;
+}
+.window-1 {
+  position: absolute;
+  bottom: 50%;
+  top: 0;
+  width: 100%;
+}
+.window-1:after {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 60%;
+  background: #293241;
+  bottom: 0;
+  right: 10%;
+  border: 1px solid #fff;
+}
+.window-1:before {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 60%;
+  background: #293241;
+  bottom: 0;
+  left: 10%;
+  border: 1px solid #fff;
+}
+.window-2 {
+  position: absolute;
+  bottom: 50%;
+  top: 0;
+  width: 100%;
+}
+.window-2:after {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 50%;
+  background: #293241;
+  bottom: 0;
+  right: 10%;
+  border: 1px solid #fff;
+}
+.window-2:before {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 50%;
+  background: #293241;
+  bottom: 0;
+  left: 10%;
+  border: 1px solid #fff;
+}
+.door-right {
+  position: absolute;
+  bottom: 0;
+  top: 50%;
+  width: 100%;
+}
+.door-right:after {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 90%;
+  background: #795548;
+  top: 10%;
+  right: 10%;
+  border: 1px solid #000;
+  box-shadow: 0 0 1px #000;
+}
+.door-right:before {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 50%;
+  background: #293241;
+  top: 10%;
+  left: 10%;
+  border: 1px solid #fff;
+}
+.door-left {
+  position: absolute;
+  bottom: 0;
+  top: 50%;
+  width: 100%;
+}
+.door-left:before {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 50%;
+  background: #293241;
+  top: 10%;
+  right: 10%;
+  border: 1px solid #fff;
+}
+.door-left:after {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 90%;
+  background: #795548;
+  top: 10%;
+  left: 10%;
+  border: 1px solid #000;
+  box-shadow: 0 0 1px #000;
+}
+.roof {
+  position: absolute;
+  height: 10%;
+  top: 0%;
+  width: 100%;
+  background: #a52a2a;
+  box-shadow: 0 1px 5px #000;
+}
+.light {
+  position: absolute;
+  height: 10%;
+  top: -7%;
+  width: 10%;
+  right: 10%;
+  background: #000;
+  box-shadow: 0 1px 2px #000;
+}
+.light:after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  z-index: 100;
+  box-shadow: 5px -5px 20px #000, 5px -5px 75px #000, 5px -5px 90px #000, 5px -5px 100px #000;
+}
+.car-1,
+.car-2 {
+  max-width: 20%;
+  min-width: 5%;
+  position: absolute;
+  background: url("https://upload.wikimedia.org/wikipedia/commons/b/b2/CH-Zusatztafel-Leichte_Motorwagen.svg");
+  height: 10%;
+  background-repeat: no-repeat;
+  bottom: 0%;
+  left: 110%;
+  background-position: bottom left;
+  background-size: contain;
+}
+.car-2 {
+  transform: scaleX(-1);
+  left: -10%;
+  background-position: bottom right;
+}
+.car-1:after,
+.car-2:after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  left: 0;
+  box-shadow: -20px 0px 55px 14px #ff9800;
+}
+@-moz-keyframes car_ride_2 {
+  0% {
+    left: -10%;
+  }
+  100% {
+    left: 110%;
+  }
+}
+@-webkit-keyframes car_ride_2 {
+  0% {
+    left: -10%;
+  }
+  100% {
+    left: 110%;
+  }
+}
+@-o-keyframes car_ride_2 {
+  0% {
+    left: -10%;
+  }
+  100% {
+    left: 110%;
+  }
+}
+@keyframes car_ride_2 {
+  0% {
+    left: -10%;
+  }
+  100% {
+    left: 110%;
+  }
+}
+@-moz-keyframes car_ride_1 {
+  0% {
+    left: 110%;
+  }
+  100% {
+    left: -10%;
+  }
+}
+@-webkit-keyframes car_ride_1 {
+  0% {
+    left: 110%;
+  }
+  100% {
+    left: -10%;
+  }
+}
+@-o-keyframes car_ride_1 {
+  0% {
+    left: 110%;
+  }
+  100% {
+    left: -10%;
+  }
+}
+@keyframes car_ride_1 {
+  0% {
+    left: 110%;
+  }
+  100% {
+    left: -10%;
+  }
+}
+</style>
+ </HEAD>
+
+ <BODY>
+ <div class="city" id="city"></div>
+<div class="embankment" id="embankment"></div>
+  <script>NUM_OF_CARS = 10;
+
+total = 100;//window.innerWidth;
+left = 0;
+bg = ["dark_blue", "blue", "light_blue", "red"];
+doors = ["door-left", "door-right"];
+windows = ["window-1", "window-2"];
+
+while (total > 0) {
+  width = getRandomInt(3, 7);
+
+  createHouse(left, width, bg[getRandomInt(0, 4)]);
+  left = left + width;
+  total = total - width;
+}
+
+for (var c = 0; c < NUM_OF_CARS; c++) {
+  createCar(document.getElementById("city"));
+}
+
+function createHouse(left, width, color_style) {
+  var city = document.getElementById("city");
+  var house = document.createElement("div");
+  city.appendChild(house);
+  house.classList.add("house");
+  house.classList.add(`${color_style}`);
+  house.style.width = `${width}%`;
+  house.style.height = `${getRandomInt(30, 70)}%`;
+  house.style.left = `${left}%`;
+
+  createDoorFloor(house, doors[getRandomInt(0, 2)]);
+
+  numOfFloors = getRandomInt(1, 3);
+  window_style = windows[getRandomInt(0, 2)];
+
+  for (var _floor = 1; _floor <= numOfFloors; _floor++) {
+    _floor_top = numOfFloors == 1 || _floor == 1 ? 0 : 25;
+    _floor_bottom = numOfFloors == 1 || _floor == 2 ? 50 : 75;
+    createWindowFloor(house, window_style, _floor_bottom, _floor_top);
+  }
+
+  createRoof(house);
+}
+
+function createWindowFloor(house, window_style, bottom, top) {
+  var window = document.createElement("div");
+  window.classList.add(window_style);
+  window.style.bottom = `${bottom}%`;
+  window.style.top = `${top}%`;
+  house.appendChild(window);
+}
+
+function createDoorFloor(house, door_style) {
+  var door = document.createElement("div");
+  door.classList.add(door_style);
+  house.appendChild(door);
+}
+
+function createCar(city) {
+  var car = document.createElement("div");
+  carType = getRandomInt(1, 3);
+  car.classList.add(`car-${carType}`);
+  city.appendChild(car);
+  car.style.animation = `car_ride_${carType} ease-in-out ${getRandomInt(
+    5,
+    20
+  )}s ${getRandomInt(1, 20)}s infinite`;
+}
+
+function createChimney(house) {
+  var chimeny = document.createElement("div");
+  chimeny.classList.add("chimney");
+  house.appendChild(chimeny);
+}
+
+function createRoof(house) {
+  var roof = document.createElement("div");
+  roof.classList.add("roof");
+  house.appendChild(roof);
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+
+</script>
+ </BODY>
+</HTML>

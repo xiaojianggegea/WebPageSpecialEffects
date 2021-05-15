@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  body {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: black;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+  </style>
+ </HEAD>
+
+ <BODY>
+<canvas></canvas>
+  <script>
+  const c = document.getElementsByTagName("canvas")[0],
+	ctx = c.getContext("2d"),
+	dXCam = 0.08,
+	dYCam = 0.08,
+	dAng = 0.004,
+	sep = 5,
+	colorPixel = (i, color, z) => {
+		i <<= 2;
+		pixels[i] = (color >> 16) & 0xff;
+		pixels[i + 1] = (color >> 8) & 0xff;
+		pixels[i + 2] = color & 0xff;
+		pixels[i + 3] = 0xff - (z << 2);
+	},
+	renderFloor = (cos, sin, xCam, yCam) => {
+		for (let y = 0; y < height; ++y) {
+			const yd = (y - height / 2) / height;
+			const zd = yd < 0 ? -sep / yd : sep / yd;
+			if (zd > 60) continue;
+			for (let x = 0; x < width; ++x) {
+				const xd = (x - width / 2) / height * zd;
+				const xCol = xd * cos - zd * sin + xCam;
+				const yCol = xd * sin + zd * cos + yCam;
+				const color = xCol ^ yCol;
+				colorPixel(x + y * width, color << 21, zd);
+			}
+		}
+	},
+	loop = () => {
+		renderFloor(Math.cos(ang), Math.sin(ang), xCam, yCam);
+		ctx.putImageData(data, 0, 0);
+		ang += dAng;
+		xCam += dXCam;
+		yCam += dYCam;
+		requestAnimationFrame(loop);
+	};
+
+let data, pixels, width, height, ang = 0, xCam = 100, yCam = 0;
+
+(() => {
+	width = window.innerWidth;
+	height = window.innerHeight;
+	c.width = width;
+	c.height = height;
+	data = ctx.getImageData(0, 0, width, height);
+	pixels = data.data;
+	loop();
+})();
+
+  </script>
+ </BODY>
+</HTML>

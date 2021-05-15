@@ -1,0 +1,293 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  body {
+  background: #000;
+  overflow: hidden;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+canvas.interactive {
+  cursor: none;
+}
+  </style>
+ </HEAD>
+
+ <BODY>
+   <canvas id="canvas"></canvas>
+   <script>
+   var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Canvas = function () {
+  function Canvas(element, ctx, w, h) {
+    _classCallCheck(this, Canvas);
+
+    this.element = element;
+    this.ctx = ctx;
+    this.width = w;
+    this.height = h;
+
+    this.interactive = false;
+    this.playing = true;
+
+    this.point = {
+      value: 150,
+      speed: 0.25,
+      limit: 70,
+      floor: 10,
+      up: true,
+      animating: false
+    };
+
+    this.multiplier = {
+      value: 1,
+      speed: 0.005,
+      limit: 20,
+      floor: 1,
+      up: true,
+      animating: true
+    };
+
+    this.center = {
+      x: w / 2,
+      y: h / 2,
+      targetX: w / 2,
+      targetY: h / 2,
+      easing: 0.02
+    };
+
+    this.radius = {
+      val: h / 2.2,
+      targetVal: h / 2.2,
+      easing: 0.02
+    };
+
+    document.body.addEventListener('click', this.click.bind(this));
+    document.body.addEventListener('mousemove', this.move.bind(this));
+    document.body.addEventListener('keyup', this.keyup.bind(this));
+
+    this.hue = 160;
+  }
+
+  _createClass(Canvas, [{
+    key: 'click',
+    value: function click(e) {
+      this.interactive = !this.interactive;
+
+      if (!this.interactive) {
+        this.center.targetX = this.width / 2;
+        this.center.targetY = this.height / 2;
+        this.radius.targetVal = this.height / 2.2;
+
+        this.element.classList.remove('interactive');
+      } else {
+        this.element.classList.add('interactive');
+      }
+    }
+  }, {
+    key: 'move',
+    value: function move(e) {
+      if (!this.interactive) {
+        return;
+      }
+
+      var h3 = this.height / 3;
+
+      this.center.targetX = e.pageX;
+      this.center.targetY = Math.max(e.pageY, h3);
+
+      this.radius.targetVal = h3 + e.pageY * 0.8;
+    }
+  }, {
+    key: 'keyup',
+    value: function keyup(e) {
+      if (e.which != 32) {
+        return;
+      }
+
+      this.playing = !this.playing;
+
+      if (this.playing && this.drawLoop) {
+        this.drawLoop();
+      }
+    }
+  }, {
+    key: 'update',
+    value: function update() {
+      this.clear();
+
+      this.animate(this.point);
+      this.animate(this.multiplier);
+      this.ease(this.center);
+      this.ease(this.radius);
+
+      this.hue += 0.3;
+
+      var h = this.hue % 360;
+
+      this.ctx.fillStyle = 'hsl(' + h + ',70%,20%)';
+      this.ctx.strokeStyle = 'hsla(' + h + ',80%,60%,0.2)';
+      this.ctx.globalCompositeOperation = 'lighter';
+    }
+  }, {
+    key: 'clear',
+    value: function clear() {
+      this.ctx.globalCompositeOperation = 'source-over';
+      this.ctx.fillStyle = 'rgba(0,0,0,0.1)';
+      this.ctx.rect(0, 0, this.width, this.height);
+      this.ctx.fill();
+    }
+  }, {
+    key: 'draw',
+    value: function draw() {
+      var radius = this.radius.val;
+
+      var w2 = this.center.x,
+          h2 = this.center.y;
+
+      this.ctx.beginPath();
+      this.ctx.shadowBlur = 0;
+      this.ctx.shadowColor = 'black';
+
+      var points = this.point.value;
+      var multiplier = this.multiplier.value;
+
+      for (var p = 0; p < points; p++) {
+        var t = p / points * Math.PI * 2;
+        var t2 = p * multiplier / points * Math.PI * 2;
+        var x = radius * Math.cos(t) + w2;
+        var y = radius * Math.sin(t) + h2;
+        var x2 = radius * Math.cos(t2) + w2;
+        var y2 = radius * Math.sin(t2) + h2;
+
+        this.ctx.moveTo(x, y);
+        this.ctx.lineTo(x2, y2);
+      }
+
+      this.ctx.arc(w2, h2, radius, 0, 2 * Math.PI);
+
+      this.ctx.stroke();
+      this.ctx.closePath();
+    }
+  }, {
+    key: 'animate',
+    value: function animate(object) {
+      if (!object.animating) {
+        return;
+      }
+
+      if (object.up) {
+        object.value += object.speed;
+      } else {
+        object.value -= object.speed;
+      }
+
+      if (object.value > object.limit) {
+        object.up = false;
+      } else if (object.value < object.floor) {
+        object.up = true;
+      }
+    }
+  }, {
+    key: 'ease',
+    value: function ease(object) {
+      if (object.val) {
+        var dv = object.targetVal - object.val;
+        object.val += dv * object.easing;
+
+        return;
+      }
+
+      var dx = object.targetX - object.x;
+      var dy = object.targetY - object.y;
+      object.x += dx * object.easing;
+      object.y += dy * object.easing;
+    }
+  }, {
+    key: 'random',
+    value: function random(from, to) {
+      return from + Math.rand() * (to - from);
+    }
+  }, {
+    key: 'resize',
+    value: function resize(w, h) {
+      this.width = w;
+      this.height = h;
+      this.center.targetX = w / 2;
+      this.center.targetY = h / 2;
+
+      this.radius.targetVal = h / 2.2;
+    }
+  }]);
+
+  return Canvas;
+}();
+
+(function (_) {
+  var canvasElement = document.getElementById('canvas'),
+      ctx = canvasElement.getContext('2d');
+
+  var w = canvasElement.width = window.innerWidth,
+      h = canvasElement.height = window.innerHeight,
+      density = 1;
+
+  var canvas = new Canvas(canvasElement, ctx, w, h);
+
+  function setup() {
+    window.addEventListener('resize', resize);
+
+    density = window.devicePixelRatio != undefined ? window.devicePixelRatio : 1.0;
+
+    canvasElement.width = w * density;
+    canvasElement.height = h * density;
+
+    canvas.width = w;
+    canvas.height = h;
+    canvas.drawLoop = draw;
+
+    ctx.scale(density, density);
+
+    draw();
+  }
+
+  function draw() {
+    canvas.update();
+    canvas.draw();
+
+    if (canvas.playing) {
+      window.requestAnimationFrame(draw);
+    }
+  }
+
+  function resize() {
+    w = canvasElement.width = window.innerWidth;
+    h = canvasElement.height = window.innerHeight;
+
+    canvasElement.width = w * density;
+    canvasElement.height = h * density;
+
+    canvas.resize(w, h);
+
+    ctx.scale(density, density);
+  }
+
+  setup();
+})();
+   </script>
+ </BODY>
+</HTML>

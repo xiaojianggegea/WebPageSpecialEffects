@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>html, body {
+	overflow: hidden;
+	touch-action: none;
+	content-zooming: none;
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+}
+
+#screen {
+	position: absolute;
+	width: 100vh;
+	height: 100vh;
+	max-height: 100vw;
+	max-width: 100vw;
+	margin: auto;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	user-select: none;
+}
+#screen canvas {
+	position: relative;
+	float: left;
+	display: block;
+	width: 28.7vmin;
+	height: 28.7vmin;
+	background:#222;
+	margin-left: 3vmin;
+	margin-top: 3vmin;
+	border-radius: 3vmin;
+}</style>
+ </HEAD>
+
+ <BODY><div id="screen"></div>
+  <script>"use strict";
+{
+	const Box = class {
+		constructor(container, i) {
+			this.canvas = document.createElement("canvas");
+			container.appendChild(this.canvas);
+			this.width = this.canvas.width = this.canvas.offsetWidth;
+			this.height = this.canvas.height = this.canvas.offsetHeight;
+			this.ctx = this.canvas.getContext("2d");
+			this.ctx.lineCap = "round";
+			this.points = Array.from(
+				{ length: 12 },
+				_ => new Box.Point(this.width * 0.5, this.width * 0.5)
+			);
+			this.constraints = [];
+			this.color = `hsl(${10 * i}, 70%, 30%)`;
+			// links p1, p2, length, width
+			const links = [
+				[0, 1, 6, 5],
+				[1, 2, 5, 4],
+				[3, 7, 10, 6],
+				[7, 8, 7, 4],
+				[3, 9, 10, 6],
+				[9, 10, 7, 4],
+				[0, 4, 5, 0],
+				[0, 3, 7, 9],
+				[0, 5, 6, 5],
+				[5, 6, 5, 4],
+				[4, 11, 0.1, 11]
+			];
+			// constaints: p1, p2, p3, angle, range
+			const p2 = Math.PI / 2;
+			const p3 = Math.PI / 3;
+			[
+				[0, 4, 11, 0, 0, 0],
+				[4, 0, 3, 0, 1, 0.05],
+				[3, 0, 4, 0, 1, 0.05],
+				[3, 0, 1, p2, p2 * 4, 0],
+				[0, 1, 2, -p2, p3, 0.05],
+				[3, 0, 5, p2, p2 * 4, 0],
+				[0, 5, 6, -p2, p3, 0.05],
+				[0, 3, 7, -p3 + 0.5, p2, 0.05],
+				[0, 3, 9, -p3 + 0.5, p2, 0.05],
+				[3, 7, 8, p2, p3, 0.05],
+				[3, 9, 10, p2, p3, 0.05]
+			].forEach(p => {
+				this.constraints.push(new Box.Constraint(this, links, p, this.width / 30));
+			});
+		}
+		run() {
+			this.ctx.setTransform(0, 1, 1, 0, 0, 0);
+			this.ctx.clearRect(0, 0, this.width + 1, this.height + 1);
+			this.ctx.globalCompositeOperation = "lighter";
+			for (const constraint of this.constraints) constraint.solve();
+			for (const point of this.points) point.integrate();
+		}
+	};
+	Box.Point = class {
+		constructor(x, y) {
+			this.x = x;
+			this.y = y;
+			this.xb = x;
+			this.yb = y
+			this.w = 0;
+		}
+		integrate() {
+			const vx = (this.x - this.xb) * 0.995;
+			const vy = (this.y - this.yb) * 0.995;
+			this.xb = this.x;
+			this.yb = this.y;
+			this.x += vx;
+			this.y += vy;
+		}
+	};
+	Box.Constraint = class {
+		constructor(box, links, p, s) {
+			this.ctx = box.ctx;
+			this.p1 = box.points[p[0]];
+			this.p2 = box.points[p[1]];
+			this.p3 = box.points[p[2]];
+			this.m = 0;
+			this.angle = p[3];
+			this.range = p[4];
+			this.force = p[5];
+			const link1 = this.link(links, p[0], p[1]);
+			const link2 = this.link(links, p[1], p[2]);
+			this.len1 = link1[2] * s;
+			this.len2 = link2[2] * s;
+			this.width = link2[3] * s * 0.5;
+			if (this.width * 0.5 > this.p3.w) this.p3.w = this.width * 0.5;
+			this.shape = document.createElement("canvas");
+			if (this.width) {
+				this.shape.width = this.len2 + this.width;
+				this.shape.height = this.width;
+				const ict = this.shape.getContext("2d");
+				ict.lineCap = "round";
+				ict.strokeStyle = box.color;
+				ict.beginPath();
+				ict.lineWidth = this.width * 0.9;
+				ict.moveTo(this.width * 0.5, this.width * 0.5);
+				ict.lineTo(this.len2 + this.width * 0.5, this.width * 0.5);
+				ict.stroke();
+			}
+		}
+		link(links, p0, p1) {
+			for (const link of links) {
+				if (
+					(p0 === link[0] && p1 === link[1]) ||
+					(p1 === link[0] && p0 === link[1])
+				)
+					return link;
+			}
+		}
+		solve() {
+			const a1 = Math.atan2(this.p2.y - this.p1.y, this.p2.x - this.p1.x);
+			const b1 = Math.atan2(this.p3.y - this.p2.y, this.p3.x - this.p2.x);
+			const c = this.angle - (b1 - a1);
+			const d = c > Math.PI ? c - 2 * Math.PI : c < -Math.PI ? c + 2 * Math.PI : c;
+			const e = Math.abs(d) > this.range ? (-Math.sign(d) * this.range + d) * this.force : 0;
+			const cos1 = Math.cos(a1 - e);
+			const sin1 = Math.sin(a1 - e);
+			const x1 = this.p1.x + (this.p2.x - this.p1.x) * 0.5;
+			const y1 = this.p1.y + (this.p2.y - this.p1.y) * 0.5;
+			this.p1.x = x1 - cos1 * this.len1 * 0.5;
+			this.p1.y = y1 - sin1 * this.len1 * 0.5;
+			this.p2.x = x1 + cos1 * this.len1 * 0.5;
+			this.p2.y = y1 + sin1 * this.len1 * 0.5;
+			this.m += 0.0005 * (Math.random() - 0.5);
+			this.m *= 0.99;
+			const a2 = this.m + Math.atan2(this.p2.y - this.p3.y, this.p2.x - this.p3.x) + e;
+			const cos2 = Math.cos(a2);
+			const sin2 = Math.sin(a2);
+			const x2 = this.p3.x + (this.p2.x - this.p3.x) * 0.5;
+			const y2 = this.p3.y + (this.p2.y - this.p3.y) * 0.5;
+			this.p3.x = x2 - cos2 * this.len2 * 0.5;
+			this.p3.y = y2 - sin2 * this.len2 * 0.5;
+			this.p2.x = x2 + cos2 * this.len2 * 0.5;
+			this.p2.y = y2 + sin2 * this.len2 * 0.5;
+			if (this.width) {
+				this.ctx.setTransform(cos2, sin2, -sin2, cos2, this.p2.x, this.p2.y);
+				this.ctx.drawImage(
+					this.shape,
+					-this.len2 - this.width * 0.5,
+					-this.width * 0.5
+				);
+			}
+		}
+	};
+	const screen = document.querySelector("#screen");
+	const boxes = Array.from({ length: 9 }, (v, i) => new Box(screen, i));
+	const run = () => {
+		requestAnimationFrame(run);
+		for (const box of boxes) box.run();
+	};
+	run();
+}</script>
+ </BODY>
+</HTML>

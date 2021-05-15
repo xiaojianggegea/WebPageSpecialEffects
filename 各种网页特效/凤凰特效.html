@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  * {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+canvas {
+  width: 100%;
+    height: 100%;
+}
+  </style>
+ </HEAD>
+
+ <BODY>
+ <canvas></canvas>
+  <script>
+  var canvas = document.getElementsByTagName('canvas')[0];
+var ctx = canvas.getContext('2d');
+canvas.width=canvas.height=400;
+ctx.fillRect(0,0,400,400);
+rus();
+
+function rus(){
+    var a,b,c,d,e,f,s,r,r2,max,x,y,px,py,tim,tm,tx,ty,lit,bai,wr;
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle="rgb(0,0,0)";
+    ctx.fillRect(0,0,400,400);
+    ctx.globalCompositeOperation = "lighter";
+    tim=new Date().getTime()/200;
+    lit=0.4+Math.sin(tim/11)*0.3;
+    bai=4+Math.sin(tim/13);
+    wr=15/bai;
+    
+    r2=tim/17;
+    for(f=0;f<40;f++){
+        a=f;
+        if(a>30)a=60-a;
+        s=(a/30)+0.1;
+        if(f>10 && f<29){
+            a=Math.abs(19-f)/9;
+            s*=(a*0.7+0.3);
+        }
+        max=(40*s)|0;
+        r2+=s/70;
+        tx=200+Math.cos(r2*3)*50;
+        ty=200+Math.sin(r2*5)*50;
+        tim+=0.2;
+        
+        x=y=r=0;
+        d=[];
+        for(a=0;a<max;a++){
+            b=(max-a)/max;
+            px=Math.cos(r);
+            py=Math.sin(r);
+            r+=Math.sin(a/max*Math.PI*bai*s-tim)/wr;
+            d[a]=[px*b*s,py*b*s,x,y,b*s];
+            x+=px*b*11*s;
+            y+=py*b*11*s;
+        }
+        
+        for(c=0;c<4;c++){
+            e=(4-c)*4;
+            ctx.fillStyle="hsla(11,80%,"+(f/2+15*c+10)+"%,"+lit+")";
+            ctx.beginPath();
+            for(a=0;a<d.length;a++)ctx[(a?"line":"move")+"To"](tx+d[a][2]+d[a][1]*e,ty+d[a][3]-d[a][0]*e);
+            for(a=d.length-2;a>=0;a--)ctx.lineTo(tx+d[a][2]-d[a][1]*e,ty+d[a][3]+d[a][0]*e);
+            for(a=0;a<d.length;a++)ctx.lineTo(tx-d[a][2]+d[a][1]*e,ty+d[a][3]+d[a][0]*e);
+            for(a=d.length-2;a>=0;a--)ctx.lineTo(tx-d[a][2]-d[a][1]*e,ty+d[a][3]-d[a][0]*e);
+            ctx.fill();
+        }
+    }
+    
+    for(a=0;a<20;a++){
+        tx=200+Math.cos(r2*3)*50;
+        ty=200+Math.sin(r2*5)*50;
+        ctx.fillStyle="hsla(11,80%,"+(30+a*3)+"%,"+lit+")";
+        ctx.beginPath();
+        ctx.arc(tx,ty,21-a,0,Math.PI*2,false);
+        ctx.fill();
+        r2+=0.01;
+    }
+    ctx.fillStyle="rgba(255,255,255,0.02)";
+    for(a=0;a<40;a++){
+        ctx.beginPath();
+        ctx.arc(tx,ty,10+a*2,0,Math.PI*2,false);
+        ctx.fill();
+    }
+    requestAnimationFrame(rus);
+}
+  </script>
+ </BODY>
+</HTML>

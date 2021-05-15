@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>body {
+  height: 100vh;
+  background: lightgrey;
+}
+
+.item {
+  border: 1px solid black;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  position: absolute;
+  // opacity: 0.5;
+  // mix-blend-mode: multiply;
+  transition: 0.2s ease;
+  
+  
+  // width: 20px !important;
+  // height: 20px !important;
+  // border-radius: 100% !important;
+}
+
+.center {
+  border: 1px solid black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.eye {
+  width: 200px;
+  height: 200px;
+  background: white;
+  border-radius: 75% 15%;
+  transform: rotate(45deg);
+  overflow: hidden;
+}
+
+.left {
+  left: 300px;
+}
+.right {
+  right: 300px;
+}
+
+.eye-derotate {
+  transform: rotate(-45deg);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.iris {
+  width: 120px;
+  height: 120px;
+  background: lightblue;
+  border-radius: 100%;
+  transition: 0.2s ease;
+  transform: translate(0, 0);
+}
+
+.pupil {
+  width: 50px;
+  height: 50px;
+  background: black;
+  border-radius: 100%;
+  transition: 0.2s ease;
+}
+
+
+.hide {
+  display: none;
+}</style>
+ </HEAD>
+
+ <BODY>
+ <div class="item item1"></div>
+<div class="item item2"></div>
+<div class="item item3"></div>
+
+
+<div class="center eye left">
+  <div class="eye-derotate">
+    <div class="center iris">
+      <div class="center pupil"></div>
+    </div>
+  </div>
+</div>
+
+<div class="center eye right">
+  <div class="eye-derotate">
+    <div class="center iris">
+      <div class="center pupil"></div>
+    </div>
+  </div>
+</div>
+  <script>console.clear();
+var item = document.querySelectorAll('.item1');
+
+var eye = document.querySelectorAll('.eye');
+var iris = document.querySelectorAll('.iris');
+var pupil = document.querySelectorAll('.pupil');
+
+
+document.addEventListener('mousemove', function(e) {
+  var sW = window.innerWidth;
+  var sH = window.innerHeight;
+  var cW = sW / 2;
+  var cH = sH / 2;
+  var mX = e.clientX;
+  var mY = e.clientY;
+  
+  
+  for(var i = 0; i < eye.length; i++) {
+    var el = eye[i].getBoundingClientRect();
+    var eyeCenterX = el.left + el.width / 2;
+    var eyeCenterY = el.top + el.height / 2;
+    
+    var dX = eyeCenterX - mX;
+    if(dX < -200) {
+      dX = -200;
+    } else if(dX > 200) {
+      dX = 200;
+    }
+    
+    var dY = eyeCenterY - mY;
+    if(dY < -200) {
+      dY = -200;
+    } else if(dY > 200) {
+      dY = 200;
+    }
+    
+    var pX = (dX) * 100 / 200;
+    var moveIrisX = 40 * pX / 100 * -1;
+    var movePupilX = 25 * pX / 100 * -1;
+
+    var pY = (dY) * 100 / 200;
+    var moveIrisY = 30 * pY / 100 * -1;
+    var movePupilY = 25 * pY / 100 * -1;
+
+    console.log(dX, dY);
+    
+    iris[i].style.transform = 'translate(' + moveIrisX + 'px, ' + moveIrisY + 'px)';
+    pupil[i].style.transform = 'translate(' + movePupilX + 'px, ' + movePupilY + 'px)';
+  };
+});</script>
+ </BODY>
+</HTML>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>clock</title>
+
+<link type="text/css" href="css/style.css" rel="stylesheet" />
+
+<script type="text/javascript">
+function isInt(n) {
+	return parseInt(n) === n;
+}
+
+function rotate(x, y, angle) {
+	var A, R, rad;
+	rad = (angle == 0 ? 270 : angle) * Math.PI / 180;
+	A = Math.atan2(y, x) + rad;
+	R = Math.sqrt(x * x + y * y);
+	return {
+		x: Math.cos(A) * R,
+		y: Math.sin(A) * R
+	};
+}
+
+function rotateElement(el, deg) {
+	el.style.transform = `rotate(${deg}deg)`;
+}
+</script>
+</head>
+
+<body>
+
+<div class="clock">
+	<ul class="mark">
+		<script>
+			{
+				let i = 0;
+				let html = '';
+				while (i < 60) {
+					let n = i / 5 % 12;
+					n = n === 0 ? 12 : n;
+					let bold = isInt(n);
+					html +=
+						`<li class="${bold ? ' bold': ''}" style="transform: translateY(250px) rotate(${i * 6}deg);"></li>`;
+					i++;
+				}
+				document.write(html);
+			}
+		</script>
+	</ul>
+	<script>
+		{
+			let angle = 30,
+				x = 110,
+				y = -190,
+				i = 1,
+				html = '';
+			html += `<div class="numbers" style="transform: translate(${x}px, ${y}px);">${i}</div>`;
+			while (i++ < 12) {
+				let pos = rotate(x, y, angle);
+				x = pos.x;
+				y = pos.y;
+				html += `<div class="numbers" style="transform: translate(${x}px, ${y}px);">${i}</div>`;
+			}
+			document.write(html);
+		}
+	</script>
+	
+	<div class="time">
+		<div id="date"></div>
+		<div id="now"></div>
+		<div id="day"></div>
+	</div>
+	
+	<div class="hour-hand" id="h"></div>
+	<div class="minute-hand" id="m"></div>
+	<div class="second-hand" id="s"></div>
+	<div class="center"></div>
+	
+</div>
+
+<script>
+{
+	let f = (e, i) => (i != 0 && e < 10 ? '0' + e : e);
+	setInterval(() => {
+		let t = new Date();
+		rotateElement(h, t.getHours() * 30 + t.getMinutes() / 60 * 30);
+		rotateElement(m, t.getMinutes() * 6 + t.getSeconds() / 60 * 6);
+		rotateElement(s, t.getSeconds() * 6 + t.getMilliseconds() / 1000 * 6);
+		date.innerHTML = [t.getFullYear(), t.getMonth() + 1, t.getDate()].map(f).join('-');
+		day.innerHTML = '星期' + '日一二三四五六' [t.getDay()];
+		now.innerHTML = [t.getHours(), t.getMinutes(), t.getSeconds()].map(f).join(':');
+	}, 1000 / 60);
+}
+</script>
+
+</body>
+</html>

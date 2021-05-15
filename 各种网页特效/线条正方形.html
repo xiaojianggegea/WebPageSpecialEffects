@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="renderer" content="webkit" />
+<style>
+.rect{width:100px;height:100px;position:absolute;top:100px;left:100px;border:1px solid #000;text-align:center;line-height:100px;font-size:30px;background:#fcc;}
+
+.parrent{width:300px;height:300px;position:absolute;top:100px;left:200px;border:2px solid #f00;border-radius:150px;
+	transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-o-transform-style: preserve-3d;
+}
+
+.border{position:absolute;top:0;left:0;width:100%;height:100%;top:0;left:0;border-radius:50%;border:2px solid #f00;}
+
+.anmtx{transform: translateZ(75px);
+	animation:mymove 5s infinite linear;
+	-webkit-animation:mymove 5s infinite linear;
+	-moz-animation:mymove 5s infinite linear;
+	-o-animation:mymove 5s infinite linear;
+}
+
+@keyframes mymove{
+	from{transform:rotateX(0deg) rotateY(0deg);}
+	to{transform:rotateX(360deg) rotateY(360deg);}
+}
+@-webkit-keyframes mymove{
+	from{-webkit-transform:rotateX(0deg) rotateY(0deg);}
+	to{-webkit-transform:rotateX(360deg) rotateY(360deg);}
+}
+@-moz-keyframes mymove{
+	from{-moz-transform:rotateX(0deg) rotateY(0deg);}
+	to{-moz-transform:rotateX(360deg) rotateY(360deg);}
+}
+@-o-keyframes mymove{
+	from{-o-transform:rotateX(0deg) rotateY(0deg);}
+	to{-o-transform:rotateX(360deg) rotateY(360deg);}
+}
+</style>
+</head>
+<body>
+<div class="parrent anmtx">
+	<div class="rect" style="transform:rotateX(0deg) translateZ(50px)">1</div>
+	<div class="rect" style="transform:rotateY(-90deg) translateZ(50px) ;">2</div>
+	<div class="rect" style="transform:rotateY(90deg) translateZ(50px);">3</div>
+	<div class="rect" style="transform: rotateX(90deg) translateZ(50px);">4</div>
+	<div class="rect" style="transform:rotateX(-90deg) translateZ(50px) ;">5</div>
+	<div class="rect" style="transform:rotateX(180deg) translateZ(50px) ;">6</div>
+	
+	<div class="border" style="transform:rotateX(90deg);"></div>
+	<div class="border" style="transform:rotateY(90deg);"></div>
+</div>
+</body>
+</html>

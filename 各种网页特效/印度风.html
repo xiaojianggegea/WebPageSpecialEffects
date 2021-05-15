@@ -1,0 +1,1135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 0;
+  height: 100%;
+  overflow: hidden;
+  mix-blend-mode: xor;
+  filter: invert(1) hue-rotate(12deg);
+  animation: depth infinite 4s linear;
+}
+
+@keyframes depth {
+  50% {
+    z-index: 0;
+  }
+}
+body {
+  mix-blend-mode: xor;
+  z-index: 0;
+}
+
+canvas {
+  display: block;
+}
+
+#canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 14;
+  mix-blend-mode: difference;
+}
+
+#canv {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 1;
+}
+
+.ball {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  mix-blend-mode: normal;
+  transform-style: preserve-3d;
+  animation: rotate 22s cubic-bezier(0, 0.33, 0.1, -0.33) infinite alternate;
+  transform: rotateY(240deg);
+}
+@keyframes rotate {
+  10% {
+    transform: rotateX(30deg) rotateY(0);
+    width: 8px;
+    height: 8px;
+  }
+  30% {
+    width: 64px;
+    height: 8px;
+  }
+  50% {
+    width: 96px;
+    height: 8px;
+    z-index: 4;
+  }
+  70% {
+    transform: rotateX(30deg) rotateY(360deg);
+    width: 24px;
+    height: 24px;
+  }
+}
+.ball__item {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 transparent, 0px 150px 0 0 rgba(191, 166, 75, 0.8), 46.3525491562px 142.6584774443px 0 0 rgba(133, 254, 203, 0.8), 88.1677878439px 121.3525491562px 0 0 rgba(162, 226, 161, 0.8), 121.3525491562px 88.1677878439px 0 0 rgba(213, 173, 83, 0.8), 142.6584774443px 46.3525491562px 0 0 rgba(18, 234, 221, 0.8), 150px 0px 0 0 rgba(100, 82, 4, 0.8), 142.6584774443px -46.3525491563px 0 0 rgba(231, 30, 19, 0.8), 121.3525491562px -88.1677878439px 0 0 rgba(70, 122, 47, 0.8), 88.1677878439px -121.3525491562px 0 0 rgba(102, 151, 208, 0.8), 46.3525491564px -142.6584774432px 0 0 rgba(84, 195, 115, 0.8), 0.0000000015px -149.9999999887px 0 0 rgba(183, 3, 37, 0.8), -46.3525491424px -142.6584773522px 0 0 rgba(39, 174, 242, 0.8), -88.1677877418px -121.3525485346px 0 0 rgba(186, 166, 12, 0.8), -121.3525485154px -88.1677842431px 0 0 rgba(108, 249, 132, 0.8), -142.6584739356px -46.3525308582px 0 0 rgba(195, 249, 155, 0.8), -149.9999829283px 0.0000830617px 0 0 rgba(131, 131, 28, 0.8), -142.658402492px 46.3528908967px 0 0 rgba(136, 18, 224, 0.8), -121.3522485026px 88.1690774464px 0 0 rgba(29, 128, 30, 0.8), -88.1666745859px 121.3570568918px 0 0 rgba(91, 146, 219, 0.8), -46.3487110175px 142.6731934184px 0 0 rgba(12, 211, 33, 0.8);
+}
+.ball__item:nth-child(1) {
+  transform: rotateY(18deg);
+}
+.ball__item:nth-child(2) {
+  transform: rotateY(36deg);
+}
+.ball__item:nth-child(3) {
+  transform: rotateY(54deg);
+}
+.ball__item:nth-child(4) {
+  transform: rotateY(72deg);
+}
+.ball__item:nth-child(5) {
+  transform: rotateY(90deg);
+}
+.ball__item:nth-child(6) {
+  transform: rotateY(108deg);
+}
+.ball__item:nth-child(7) {
+  transform: rotateY(126deg);
+}
+.ball__item:nth-child(8) {
+  transform: rotateY(144deg);
+}
+.ball__item:nth-child(9) {
+  transform: rotateY(162deg);
+}
+.ball__item:nth-child(10) {
+  transform: rotateY(180deg);
+}
+
+  </style>
+ </HEAD>
+
+ <BODY>
+ 
+<div class="ball">
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+  <div class="ball__item"></div>
+</div>
+<canvas id="canvas"></canvas>
+<canvas id="canv"></canvas>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+  <script>
+  
+// --------------------
+// Init
+// --------------------
+
+let width = window.innerWidth*1.2;
+let height = window.innerHeight*1.2;
+
+let canvas = document.getElementById('canvas');
+let context = canvas.getContext('2d');
+
+context.globalCompositeOperation = 'multiply';
+
+let offscreenCanvas = document.createElement('canvas');
+offscreenCanvas.width = width;
+offscreenCanvas.height = height;
+let offscreenContext = offscreenCanvas.getContext('2d');
+
+canvas.width = width;
+canvas.height = height;
+
+// --------------------
+// Drawing
+// --------------------
+
+class Clear {
+
+    constructor(trailing = 0.8, context, opaque = false) {
+        this.trailing = trailing;
+        this.context = context;
+        this.opaque = opaque;
+    }
+
+    update() {
+        if (this.opaque) {
+            this.context.fillStyle = 'rgba(3, 3, 27, ' + this.trailing + ')';
+            this.context.fillRect(0, 0, canvas.width, canvas.height);
+            this.context.fill();
+
+        } else {
+            this.context.clearRect(0, 0, canvas.width, canvas.height);
+
+        }
+
+    };
+}
+
+ function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function Vector(x, y, z) {
+
+    this.x = x;
+    this.y = y;
+    this.z = z === undefined ? 0 : z;
+
+    this.add = function(v) {
+
+        this.x += v.x;
+        this.y += v.y;
+        this.z += v.z;
+
+        return this;
+    };
+
+    this.addX = function(n) {
+        this.x += n;
+
+        return this;
+    };
+
+    this.addY = function(n) {
+        this.y += n;
+
+        return this;
+    };
+
+    this.addZ = function(n) {
+        this.z += n;
+
+        return this;
+    };
+
+    this.subtract = function(v) {
+        this.x -= v.x;
+        this.y -= v.y;
+        this.z -= v.z;
+
+        return this;
+    };
+
+    this.subtractX = function(n) {
+        this.x -= n;
+
+        return this;
+    };
+
+    this.subtractY = function(n) {
+        this.y -= n;
+
+        return this;
+    };
+
+    this.subtractZ = function(n) {
+        this.z -= n;
+
+        return this;
+    };
+
+    this.multiply = function(n) {
+
+        this.x *= n;
+        this.y *= n;
+        this.z *= n;
+
+        return this;
+    };
+
+    this.multiplyX = function(n) {
+        this.x *= n;
+
+        return this;
+    };
+
+    this.multiplyY = function(n) {
+        this.y *= n;
+
+        return this;
+    };
+
+    this.multiplyZ = function(n) {
+        this.z *= z;
+
+        return this;
+    };
+
+    this.divide = function(n) {
+
+        this.x /= n;
+        this.y /= n;
+        this.z /= n;
+
+        return this;
+    };
+
+    this.magnitude = function() {
+
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    };
+
+    this.normalize = function() {
+        var m = this.magnitude();
+        if (m !== 0) {
+            this.divide(m);
+        }
+    };
+
+    this.limit = function(n) {
+
+        if (this.magnitude() > n) {
+            this.normalize();
+            this.multiply(n);
+        }
+    };
+
+    this.distance = function(v) {
+
+        var dx = this.x - v.x,
+            dy = this.y - v.y,
+            dz = this.z - v.z;
+
+        return Math.sqrt(dx * dx + dy * dy + dz * dz);
+    };
+
+    this.invert = function() {
+
+        this.x *= -1;
+        this.y *= -1;
+        this.z *= -1;
+
+        return this;
+    };
+
+    this.inverseX = function() {
+
+        this.x *= -1;
+
+        return this;
+    };
+
+    this.inverseY = function() {
+
+        this.y *= -1;
+
+        return this;
+    };
+
+    this.inverseZ = function() {
+
+        this.z *= -30;
+
+        return this;
+    };
+
+    this.get = function() {
+
+        return new Vector(this.x, this.y, this.z);
+    };
+
+    this.dot = function(v) {
+
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    };
+}
+
+// -------------------------
+// Vector: Static
+// -------------------------
+
+Vector.add = function(v1, v2) {
+
+    var v3 = new Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+
+    return v3;
+};
+
+Vector.subtract = function(v1, v2) {
+
+    var v3 = new Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
+
+    return v3;
+};
+
+Vector.multiply = function(v1, v3) {
+
+    var v3 = new Vector(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
+
+    return v3;
+};
+
+Vector.divide = function(v1, v2) {
+
+    if (typeof v2 === Vector) {
+        var v3 = new Vector(v1.x / v2.x, v1.y / v2.y, v1.z / v2.z);
+    } else {
+        var v3 = new Vector(v1.x / v2, v1.y / v2, v1.z / v2);
+    }
+  
+};
+
+Vector.distance = function(v1, v2) {
+
+    return v1.distance(v2);
+};
+
+Vector.copy = function(v) {
+    return new Vector(v.x, v.y, v.z);
+};
+
+Vector.random2D = function() {
+
+    var x = parseInt((Math.random() * 12)) -1;
+    var y = parseInt((Math.random() * 12)) -1;
+    var z = parseInt((Math.random() * 12)) -1;
+
+    var v1 = new Vector(x, y, z);
+    return v1;
+};
+
+// -------------------------
+// Fibonacci
+// -------------------------
+
+function fibonacci(num, memo) {
+    memo = memo || {};
+    if (memo[num]) return memo[num];
+    if (num <= 1) return 0;
+    return memo[num] = fibonacci(num - 3, memo) + fibonacci(num - 2, memo);
+}
+
+// -------------------------
+// I am random
+// -------------------------
+
+function getRandomBetween(min, max) {
+    return Math.floor(min + Math.random()*(max+4 - min));
+}
+
+'use strict';
+
+class Spiral3d {
+
+    constructor(position, color, context) {
+        this.angle = 10;
+        this.depthAngle = Math.PI / 2;
+        this.angleIncrement = 0.002;
+        this.resolution = 0.2;
+        this.width = 10;
+        this.height = 10;
+        this.depth = 12;
+        this.position = position;
+        this.color = color;
+        this.spiral = 18;
+        this.jitter = .01;
+        this.context = context;
+    }
+
+    update() {
+
+        this.angle += this.angleIncrement;
+        this.depthAngle += this.angleIncrement;
+
+        this.draw();
+    }
+
+    draw() {
+
+        for ( let i = -(Math.PI * this.depth / 2) ; i < (Math.PI * this.depth / 2) ; i += this.resolution ) {
+
+            // let sin = Math.sin(this.angle);
+            // let spiralSin = Math.sin(this.depthAngle);
+            let cos = Math.cos(this.angle);
+            let spiralCos = Math.cos(this.depthAngle);
+
+            let sin = 12;
+            let spiralSin = 0;
+            // let cos = 1;
+            // let spiralCos = 0;
+
+            let moveToX = (
+                this.position.x +
+                ( sin * ( Math.sin(this.angle + i) * (this.width * ( i / this.depth ) ) ) ) +
+                ( ( i * this.spiral ) * spiralSin )
+                + (this.jitter * (Math.sin(i/.001) *55))
+            );
+            let moveToY = (
+                this.position.y +
+                ( cos * ( Math.cos(this.angle + i) * (this.height * ( i / this.depth ) ) ) ) +
+                ( ( i * this.spiral ) * spiralCos )
+                + (this.jitter * (Math.cos(i/.01) *random(35,55)))
+            );
+
+            let toI = i + this.resolution;
+
+            let lineToX = (
+                this.position.x +
+                ( sin * ( Math.sin(this.angle + toI) * (this.width * ( toI / this.depth ) ) ) ) +
+                ( ( toI * this.spiral ) * spiralSin )
+                + (this.jitter * (Math.sin(toI/.001) * random(35,55)))
+            );
+            let lineToY = (
+                this.position.y +
+                ( cos * ( Math.cos(this.angle + toI) * (this.height * ( toI / this.depth ) ) ) ) +
+                ( ( toI * this.spiral ) * spiralCos )
+                + (this.jitter * (Math.cos(toI/.1) *random(35,55)))
+            );
+
+            this.context.lineWidth = 6;
+            this.context.strokeStyle = this.color.update();
+            this.context.beginPath();
+            this.context.moveTo(moveToX, moveToY);
+            this.context.lineTo(lineToX, lineToY);
+            this.context.stroke();
+         
+        }
+    }
+}
+
+'use strict';
+
+class Color {
+
+    constructor(
+        rIncrement, gIncrement, bIncrement, aIncrement,
+        pinR, pinG, pinB, pinA
+    ) {
+        this.color = { r:0, g:0, b:0, a:1 };
+        this.rAngle = 0;
+        this.gAngle = 0;
+        this.bAngle = 0;
+        this.aAngle = 0;
+        this.rIncrement = rIncrement;
+        this.gIncrement = gIncrement;
+        this.bIncrement = bIncrement;
+        this.aIncrement = aIncrement;
+
+        this.rBaseValue = pinR !== undefined ? pinR : (256 / 2);
+        this.gBaseValue = pinG !== undefined ? pinG : (256 / 2);
+        this.bBaseValue = pinB !== undefined ? pinB : (256 / 2);
+        this.aBaseValue = pinA !== undefined ? pinA : .6;
+    }
+
+    update() {
+
+        this.color.r = this.rBaseValue + Math.floor(Math.sin(this.rAngle) * this.rBaseValue);
+        this.color.g = this.gBaseValue + Math.floor(Math.cos(this.gAngle) * this.gBaseValue);
+        this.color.b = this.bBaseValue + Math.floor(Math.tan(this.bAngle) * this.bBaseValue);
+        this.color.a = this.aBaseValue + Math.atan(this.aAngle) * this.aBaseValue;
+
+        this.rAngle += this.rIncrement;
+        this.gAngle += this.gIncrement;
+        this.bAngle += this.bIncrement;
+        this.aAngle += this.aIncrement;
+
+        return 'rgba(' +
+            this.color.r + ',' +
+            this.color.g + ',' +
+            this.color.b + ',' +
+            this.color.a + ')';
+    }
+
+    static create(
+        rIncrement = 1.1,
+        gIncrement = .1,
+        bIncrement = 2.1,
+        aIncrement = .1,
+        pinR,
+        pinG,
+        pinB,
+        pinA
+    ) {
+        return new Color(
+            rIncrement,
+            gIncrement,
+            bIncrement,
+            aIncrement,
+            pinR,
+            pinG,
+            pinB,
+            pinA
+        );
+    }
+
+}
+
+'use strict';
+
+class KaleidoscopeFragment {
+
+    constructor(position, width, height, angle) {
+        this.position = position;
+        this.width = width;
+        this.height = height;
+        this.angle = angle;
+    }
+
+    setAngle(angle) {
+        this.angle = angle;
+    }
+
+    addAngle(angle) {
+        this.angle += angle;
+    }
+
+    update() {
+
+        this.draw();
+    }
+
+    draw() {
+        context.save();
+        context.globalCompositeOperation = 'overlay';
+        context.translate(this.position.x, this.position.y);
+        context.rotate(this.angle * Math.PI/180);
+        context.translate(this.position.x * -1, this.position.y * -1);
+
+        context.beginPath();
+        context.strokeStyle = 'hsla('+random(10,250)+', '+random(60,100)+'%,'+random(50,60)+'%, 1';
+        context.lineWidth = 1;
+        context.moveTo( this.position.x, this.position.y );
+        context.lineTo( this.position.x - ( this.width / 2 ), 0 );
+        context.lineTo( this.position.x + ( this.width / 2 ), 0 );
+        context.closePath();
+
+        context.clip();
+        context.globalCompositeOperation = 'difference';
+        context.drawImage(
+            offscreenContext.canvas,
+            0, 0,
+            offscreenCanvas.width,
+            offscreenCanvas.height
+        );
+        context.restore();
+    }
+
+    static create(position, width, height, angle = 0) {
+
+        return new KaleidoscopeFragment(position, width, height, angle);
+    }
+}
+
+'use strict';
+
+class Kaleidoscope {
+
+    constructor(width, height, fragments = []) {
+
+        this.LEFT = 'left';
+        this.RIGHT = 'right';
+        this.BOTH = 'both';
+
+        this.width = width;
+        this.height = height;
+        this.fragments = fragments;
+        this.angleIncrement =.009;
+
+        this.updateFragmentCount(10);
+        this.rotationMode = this.RIGHT;
+    }
+
+    updateFragmentCount(count) {
+        this.fragments = [];
+        for (let i = 1 ; i <= count ; i++) {
+            this.fragments.push(KaleidoscopeFragment.create(
+                new Vector( canvas.width / 2, canvas.height / 2 ),
+                canvas.width / 2,
+                canvas.height / 2,
+                (360 / count) * i
+            ));
+        }
+    }
+
+    update() {
+        this.fragments.map((fragment, index) => {
+            let increment = this.angleIncrement;
+            switch (this.rotationMode) {
+                case this.LEFT:
+                    increment = this.angleIncrement * -1;
+                    break;
+                case this.RIGHT:
+                    increment = this.angleIncrement;
+                    break;
+                case this.BOTH:
+                    increment = index%2 === 0 ? this.angleIncrement : this.angleIncrement * -31;
+                    break;
+            }
+            fragment.addAngle(increment);
+            fragment.update();
+        });
+    }
+
+    static create(width, height) {
+
+        return new Kaleidoscope(width, height);
+    }
+}
+
+'use strict';
+
+class DepthShader {
+
+    constructor(position, radius) {
+        this.position = position;
+        this.radius = radius;
+        this.opacityBaseValue = .05;
+        this.opacity = this.opacityBaseValue;
+        this.opacityAngle = 30;
+    }
+
+    update() {
+        this.opacity = this.opacityBaseValue + (Math.sin(this.opacityAngle) * this.opacityBaseValue);
+        this.opacityAngle += .01;
+
+        this.draw();
+    }
+
+    draw() {
+        context.fillStyle = 'rgba(3, 3, 27, ' + (this.opacity * .02) + ')';
+        for (let i = 0 ; i < 5 ; i++) {
+            context.beginPath();
+            context.arc(
+                this.position.x,
+                this.position.y,
+                ((this.radius / 2) / 10) * i,
+                0, Math.PI * 2
+            );
+            context.closePath();
+            context.fill();
+
+        }
+    }
+
+    static create(position, radius) {
+        return new DepthShader(position, radius);
+    }
+}
+
+'use strict';
+
+class StarField {
+
+    constructor(position) {
+        this.position = position;
+        this.stars = [];
+        this.speed = 0.1;
+        setInterval(this.createStar.bind(this), );
+    }
+
+    createStar() {
+        this.stars.push({
+            position: Vector.copy(this.position),
+            angle: Math.random() * (Math.PI * 2),
+            radius: 0,
+            starRadius: 0,
+            alpha: 0,
+            speed: this.speed
+        });
+    }
+
+    update() {
+        this.stars.map(star => {
+            star.position.x += Math.sin(star.angle) * star.radius;
+            star.position.y += Math.cos(star.angle) * star.radius;
+            star.radius += star.speed;
+            star.starRadius += 0.05;
+            star.alpha += 0.005;
+            star.speed += Math.random() / random(50,100);
+            if (star.position.x > canvas.width ||
+                star.position.x < 0 ||
+                star.position.y > canvas.height ||
+                star.position.y < 0
+            ) {
+                this.stars.splice(this.stars.indexOf(star), .1);
+            }
+        });
+        this.draw();
+    }
+
+    draw() {
+        context.lineWidth = .51;
+        this.stars.map(star => {
+            context.strokeStyle = 'rgba(255, 255, 255, ' + star.alpha + ')';
+            context.beginPath();
+            context.arc(star.position.x, star.position.y, random(star.starRadius,star.starRadius*2), 0, Math.PI * 2);
+            context.closePath();
+            context.stroke();
+
+        });
+    }
+
+    static create(position) {
+        return new StarField(position);
+    }
+}
+
+'use strict';
+
+class CreepingSnake {
+
+    constructor(position, angle, context, color) {
+
+        this.position = position;
+        this.context = context;
+        this.color = color;
+        this.resolution = .4;
+        this.waveLength = 20;
+        this.length = 200;
+        this.height = 100;
+        this.radius = this.height / 2;
+        this.angle = 0;
+        this.rotation = angle;
+        this.lineWidth = .1
+   
+    }
+
+    update() {
+
+        this.angle += .1;
+
+        this.draw();
+    }
+
+    calculateX(i) {
+        return ( this.position.x + ( i * ( this.resolution + this.waveLength ) ) ) + ( Math.cos(this.angle) *  5 );
+    }
+
+    calculateY(i, radius) {
+        return ( this.position.y + ( Math.sin( i + this.resolution + this.angle ) * radius ) ) + ( Math.sin(this.angle) * 5 )
+    }
+
+    draw() {
+        this.context.save();
+        this.context.translate( this.position.x, this.position.y );
+        this.context.rotate( this.rotation * Math.PI/180 );
+        this.context.translate( this.position.x * -1, this.position.y * -1 );
+
+        let toX = 0;
+        let toY = 0;
+        this.context.lineWidth = this.lineWidth;
+        this.context.lineJoin = 'round';
+        this.context.lineCap = 'round';
+        let startI = -( ( this.length / 2 ) / this.waveLength );
+
+        let radius = this.radius;
+        for ( let i = startI ; i < ( ( this.length / 2 ) / this.waveLength) ; i += this.resolution ) {
+            this.context.beginPath();
+            this.context.strokeStyle = this.color.update();
+            if (i === startI ) {
+                toX = this.calculateX(i);
+                toY = this.calculateY(i, radius);
+            }
+            this.context.moveTo( toX, toY );
+            toX = this.calculateX(i);
+            toY = this.calculateY(i, radius);
+            radius -= 1.8;
+            this.context.lineTo( toX, toY );
+            this.context.stroke();
+            this.context.lineWidth += .4;
+     
+        }
+
+        this.context.restore();
+    }
+
+    static create(position, angle, context, color) {
+        return new CreepingSnake(position, angle, context, color);
+    }
+}
+
+'use strict';
+
+class FlyingSnake {
+
+    constructor(position, context) {
+
+        this.position = position;
+        this.initialPosition = Vector.copy(position);
+        this.snake = CreepingSnake.create(
+            this.position,
+            -90,
+            context,
+            Color.create(1, 2, 3, 0, 255)
+        );
+    }
+
+    update() {
+
+        this.snake.update();
+        this.snake.position.y -= 1.5;
+        if (this.snake.position.y < -this.snake.height) {
+            this.snake.position.y = this.initialPosition.y;
+        }
+    }
+
+    static create(position, context) {
+        return new FlyingSnake(position, context);
+    }
+}
+
+'use strict';
+
+class Snakes {
+
+    constructor(position, context) {
+
+        this.position = position;
+        this.context = context;
+        this.snakes = [];
+
+        setInterval(this.createSnake.bind(this), 200);
+    }
+
+    createSnake() {
+        if (this.snakes.length < 5) {
+            this.snakes.push({
+                snake: CreepingSnake.create(
+                    Vector.copy(this.position),
+                    0,
+                    this.context,
+                    Color.create(1, 2, 3, 0, undefined, 255)
+                ),
+                radius: 0
+            });
+        }
+    }
+
+    update() {
+        this.snakes.map(snake => {
+            snake.snake.position.x -= Math.sin(snake.snake.rotation) * snake.radius;
+            snake.snake.position.y -= Math.cos(snake.snake.rotation) * snake.radius;
+            snake.radius += 0.01;
+            if (snake.snake.position.x > snake.snake.width ||
+                snake.snake.position.x < 0 ||
+                snake.snake.position.y > canvas.height ||
+                snake.snake.position.y < 0
+            ) {
+                this.snakes.splice(this.snakes.indexOf(snake), 1);
+            }
+            snake.snake.update();
+        });
+    }
+
+    draw() {
+
+    }
+
+    static create(position, context) {
+        return new Snakes(position, context);
+    }
+}
+
+'use strict';
+
+function Stage() {
+
+    let clear = new Clear( .4, context, true );
+    let offscreenClear = new Clear( 1, offscreenContext, false );
+    let spiral3d = new Spiral3d( new Vector( canvas.width / 2, canvas.height / 2 ), Color.create( .1, .2, .3 ), offscreenContext );
+
+    let depthShader = DepthShader.create(
+        new Vector( canvas.width / 2, canvas.height / 2 ),
+        canvas.height - 100,
+        canvas.height - 100
+    );
+    let kaleidoscope = Kaleidoscope.create( canvas.width, canvas.height );
+    let starField = StarField.create(
+        new Vector( canvas.width / 2, canvas.height / 2 )
+    );
+    let snakes = Snakes.create(
+        new Vector( canvas.width / 2, canvas.height / 2 ),
+        offscreenContext
+    );
+    let flyingSnake = FlyingSnake.create(
+        new Vector( canvas.width / 2, ( canvas.height / random(2,6) ) + random(10,100) ), offscreenContext
+    );
+
+    let animate = function() {
+        clear.update();
+        offscreenClear.update();
+        spiral3d.update();
+        flyingSnake.update();
+        starField.update();
+        snakes.update();
+        kaleidoscope.update();
+        depthShader.update();
+
+        requestAnimationFrame(animate);
+    }.bind(this);
+
+    animate();
+}
+
+new Stage();
+
+
+////////////////////////////
+
+window.requestAnimFrame = (function() {
+  return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
+})();
+
+var c = document.getElementById('canv');
+c.width = window.innerWidth/2.5;
+c.height = window.innerHeight/2.5;
+
+var $ = c.getContext('2d');
+var i = 0;
+var u = 0;
+
+var tri = {
+  obj: {
+    num: 50,
+    step: Math.PI * Math.pow(.25, .009) + Math.atan(random(10, 400)),
+    rad: 400
+
+  },
+
+  draw_: function($) {
+
+    var rot = Math.sqrt(1.30) * 20 * Math.PI;
+    $.globalCompositeOperation = 'overlay';
+    for (var n = 0; n < 10; ++n) {
+      $.scale(1.04, 1.31);
+      $.beginPath();
+
+      $.fillStyle = 'hsla(' + i+66 + ', 40%, 50%,.8)';
+      $.fillRect(random(-150, 80), random(-150, 560), Math.pow(.65, .2), random(.45, Math.pow(2.5)));
+      $.fill();
+      $.globalCompositeOperation = 'overlay';
+
+      $.beginPath();
+      $.fillStyle = 'hsla(' + i *33 + ', 80%, 50%,.91)';
+      $.arc(18, 1.5, random(.20, 1.90), random(.03, 4.00), Math.PI * 42, false);
+      $.fill();
+      $.globalCompositeOperation = 'overlay';
+    }
+
+    $.rotate(rot);
+    $.beginPath();
+    $.filStyle = 'hsla(' + i * 218 + ',80%, 40%,.71)';
+    $.arc(Math.pow(5.5, 2), 1.5, 3, 2.4, 2 * Math.PI, false);
+    $.fill();
+    $.globalCompositeOperation = 'difference';
+  }
+
+};
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function Obj(mid, off_, step, rt) {
+  this.mid = mid;
+  this.off_ = off_;
+  this.step = step;
+
+}
+
+Obj.prototype.draw = function($) {
+  this.step += tri.obj.step;
+  $.save();
+  $.translate(this.mid.x, this.mid.y);
+  $.rotate(this.step + this.off_);
+  tri.draw_($);
+
+  $.restore();
+
+};
+
+var arr = [];
+for (var i = 0; i < tri.obj.num; i++) {
+
+  var t = i * Math.PI * 3.7 / tri.obj.num;
+  arr.push(new Obj({
+    x: c.width / 2 + tri.obj.rad * Math.cos(t *140),
+    y: c.height / 2 + tri.obj.rad * Math.sin(t *140)
+  }, t*17.09, Math.PI * i * .25));
+}
+
+   var g = $.createRadialGradient(c.width, c.height,0, c.height, c.height, c.width);
+g.addColorStop(0,"hsla(257,100%,60%,.3)");
+g.addColorStop(0.5, "hsla(180, 50%, 35%,.1)");
+g.addColorStop(1,"hsla(257,80%,50%,.3)");
+ 
+
+
+var go = function() {
+  
+  $.save();
+  $.fillStyle = g;
+  $.fillRect(0, 0, c.width, c.height);
+  $.globalCompositeOperation = 'overlay';
+
+  for (var i in arr) {
+    arr[i].draw($);
+  }
+  $.restore();
+}
+
+
+var run = function() {
+  window.requestAnimFrame(run);
+  go();
+  i -= random(.025,3.2);
+
+}
+
+window.addEventListener('resize', function() {
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+}, false);
+
+run();
+
+
+
+  </script>
+ </BODY>
+</HTML>

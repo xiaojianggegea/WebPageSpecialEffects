@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  *, *:before, *:after {
+  margin:0;
+  padding:0;
+  -webkit-box-sizing:border-box;
+          box-sizing:border-box;
+}
+html,
+body {
+  width:100%;
+  height:100%;
+}
+body {
+  position:relative;
+  background-color:#011111;
+  background-image:radial-gradient(#0d292a 0%, #011111 70%);
+  background-size:100% 600px;
+  background-repeat:no-repeat;
+}
+.moon {
+  position:absolute;
+  top:200px;
+  left:50%;
+  width:8rem;
+  height:8rem;
+  overflow:hidden;
+  border-radius:50%;
+  -webkit-transform:translateX(-50%);
+          transform:translateX(-50%);
+  -webkit-box-shadow:0 0 400px 100px #123839;
+          box-shadow:0 0 400px 100px #123839;
+  -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+}
+.moon:after {
+  content:'';
+  position:absolute;
+  top:1px;
+  right:1px;
+  bottom:1px;
+  left:1px;
+  z-index:-1;
+  border-radius:50%;
+  background-color:#fff5bb;
+  background-image:
+    radial-gradient(#f2e594 0%, #f2e594 70%, transparent 70%, transparent 100%),
+    radial-gradient(#f2e594 0%, #f2e594 70%, transparent 70%, transparent 100%),
+    radial-gradient(#f2e594 0%, #f2e594 70%, transparent 70%, transparent 100%),
+    radial-gradient(#f2e594 0%, #f2e594 70%, transparent 70%, transparent 100%),
+    radial-gradient(#f2e594 0%, #f2e594 70%, transparent 70%, transparent 100%);
+  background-size:10px 10px, 5px 5px, 15px 15px, 10px 10px, 7px 7px;
+  background-repeat:no-repeat;
+  background-position:10% 20%, 70% 15%, 35% 70%, 80% 50%, 70% 75%;
+    -webkit-box-shadow:inset -15px -15px 0 #f2e594;
+            box-shadow:inset -15px -15px 0 #f2e594;
+}
+.moon:before {
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  z-index:222;
+  background:#0b2526;
+  border-radius:50%;
+  -webkit-transform:translateX(-100%);
+          transform:translateX(-100%);
+  -webkit-animation:phase 20s infinite linear;
+          animation:phase 20s infinite linear;
+}
+@-webkit-keyframes phase {
+  0%, 100% {-webkit-transform:translateX(-100%);transform:translateX(-100%);}
+  10% {-webkit-transform:translateX(-100%);transform:translateX(-100%);}
+  99.999% {-webkit-transform:translateX(100%);transform:translateX(100%);}
+}
+@keyframes phase {
+  0%, 100% {-webkit-transform:translateX(-100%);transform:translateX(-100%);}
+  10% {-webkit-transform:translateX(-100%);transform:translateX(-100%);}
+  99.999% {-webkit-transform:translateX(100%);transform:translateX(100%);}
+}
+  </style>
+ </HEAD>
+
+ <BODY>
+  <div class="moon"></div>
+ </BODY>
+</HTML>

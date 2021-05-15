@@ -1,0 +1,299 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  body{
+  background-color: #013;
+}
+canvas{
+	background-image: linear-gradient(bottom, #000 0%, #013 100%);
+}
+  </style>
+ </HEAD>
+
+ <BODY>
+ <script type="text/javascript" src="https://admiralpotato.github.io/js/npos3d/build/npos3d.min.js"></script>
+  <script>
+  n = NPos3d;
+s = new n.Scene({
+  lineWidth: 2,
+  backgroundColor: 'transparent',
+  canvasStyleColor: 'transparent'
+});
+
+orbit = new n.Ob3D({
+  rot: [65 * deg, 0, 0],
+  shape:{}
+});
+
+rStyle = 'lines'; //Options are: 'both', 'points' and 'lines'
+bodyColor = '#999';
+body = new n.Ob3D({
+  pos: [-200,0,0],
+  shape: {},
+  renderStyle: rStyle
+});
+bodySideOffset = 15;
+bodySideRot = [deg * -90, deg * -90, 0];
+bodySideString = 'rofl';
+bodySideL = new n.VText({
+  rot: bodySideRot,
+  string: bodySideString,
+  pos: [-bodySideOffset,0,0],
+  color: bodyColor,
+  renderStyle: rStyle
+});
+bodySideR = new n.VText({
+  rot: bodySideRot,
+  string: bodySideString,
+  pos: [bodySideOffset,0,0],
+  color: bodyColor,
+  renderStyle: rStyle
+});
+windShieldOffset = bodySideOffset*1.5;
+windShildRot = [deg * -45, 0, 0];
+windShieldColor = '#09f';
+windShieldL = new n.VText({
+  rot: windShildRot,
+  string: '(',
+  pos: [-windShieldOffset,60,0],
+  color: windShieldColor,
+  renderStyle: rStyle
+});
+windShieldR = new n.VText({
+  rot: windShildRot,
+  string: ')',
+  pos: [windShieldOffset,60,0],
+  color: windShieldColor,
+  renderStyle: rStyle
+});
+windShieldC = new n.VText({
+  rot: windShildRot,
+  string: 'O',
+  pos: [0,80,0],
+  color: windShieldColor,
+  renderStyle: rStyle
+});
+landingGearOffsetX = 30;
+landingGearOffsetZ = 40;
+landingGearString = ':';
+landingGearL = new n.VText({
+  string: landingGearString,
+  pos: [-landingGearOffsetX,0,-landingGearOffsetZ],
+  renderStyle: rStyle
+});
+landingGearR = new n.VText({
+  string: landingGearString,
+  pos: [landingGearOffsetX,0,-landingGearOffsetZ],
+  renderStyle: rStyle
+});
+
+bladePosY = 12;
+bladeStock = new n.VText({
+  string: '!',
+  pos: [0,-bladePosY,25],
+  rot: [-90 * deg, 0, 0],
+  renderStyle: rStyle
+});
+bladeParent = new n.VText({
+  string: '*',
+  pos: [0,-bladePosY,45],
+  scale: [0.5,0.5,0.5],
+  fontSize: 64,
+  renderStyle: rStyle
+});
+bladeOffset = 40;
+bladeString = 'ROFL ROFL ROFL';
+bladeAlign = 'left';
+bladeRotX = deg * -25;
+bladeRotOrder = [2,0,1];
+bladeA = new n.VText({
+  pos: [bladeOffset,0,0],
+  string: bladeString,
+  textAlign: bladeAlign,
+  rot: [bladeRotX, 0, 0],
+  rotOrder: bladeRotOrder,
+  renderStyle: rStyle
+});
+bladeB = new n.VText({
+  pos: [-bladeOffset,0,0],
+  string: bladeString,
+  textAlign: bladeAlign,
+  rot: [bladeRotX, 0, pi],
+  rotOrder: bladeRotOrder,
+  renderStyle: rStyle
+});
+bladeC = new n.VText({
+  pos: [0,bladeOffset,0],
+  string: bladeString,
+  textAlign: bladeAlign,
+  rot: [bladeRotX, 0, deg * 90],
+  rotOrder: bladeRotOrder,
+  renderStyle: rStyle
+});
+bladeD = new n.VText({
+  pos: [0,-bladeOffset,0],
+  string: bladeString,
+  textAlign: bladeAlign,
+  rot: [bladeRotX, 0, deg * -90],
+  rotOrder: bladeRotOrder,
+  renderStyle: rStyle
+});
+blinkerOffset = 390;
+blinkerColor = '#f00';
+bladeABlinker = new n.VText({
+  string: '*',
+  pos: [blinkerOffset, 0, 0],
+  rot: [bladeRotX,0,0],
+  rotOrder: bladeRotOrder,
+  color: blinkerColor,
+  renderStyle: rStyle
+});
+bladeBBlinker = new n.VText({
+  string: '*',
+  pos: [-blinkerOffset, 0, 0],
+  rot: [bladeRotX,0,pi],
+  rotOrder: bladeRotOrder,
+  color: blinkerColor,
+  renderStyle: rStyle
+});
+
+tailBase = new n.VText({
+  string: 'lol lol lol',
+  textAlign: 'right',
+  pos: [0, -55, -10],
+  rot: bodySideRot,
+  fontSize: 24,
+  color: bodyColor,
+  renderStyle: rStyle
+});
+tailTip = new n.VText({
+  string: 'lol',
+  textAlign: 'right',
+  pos: [-210, 0, 0],
+  rot: [0, 0, 45],
+  fontSize: 24,
+  color: bodyColor,
+  renderStyle: rStyle
+});
+
+
+tailBladeOffset = 20;
+tailBladefontSize = 12;
+tailBladeString = 'LOL';
+tailBladeParent = new n.VText({
+  string: '*',
+  pos: [-20, 0, 15],
+  renderStyle: rStyle
+});
+tailBladeA = new n.VText({
+  string: tailBladeString,
+  textAlign: 'left',
+  fontSize: tailBladefontSize,
+  pos: [tailBladeOffset, 0, 0],
+  rot: [bladeRotX, 0, 0],
+  rotOrder: bladeRotOrder,
+  renderStyle: rStyle
+});
+tailBladeB = new n.VText({
+  string: tailBladeString,
+  textAlign: 'left',
+  pos: [-tailBladeOffset, 0, 0],
+  rot: [bladeRotX, 0, pi],
+  rotOrder: bladeRotOrder,
+  fontSize: tailBladefontSize,
+  renderStyle: rStyle
+});
+tailBladeC = new n.VText({
+  string: tailBladeString,
+  textAlign: 'left',
+  pos: [0, tailBladeOffset, 0],
+  rot: [bladeRotX, 0, deg * 90],
+  rotOrder: bladeRotOrder,
+  fontSize: tailBladefontSize,
+  renderStyle: rStyle
+});
+tailBladeD = new n.VText({
+  string: tailBladeString,
+  textAlign: 'left',
+  pos: [0, -tailBladeOffset, 0],
+  rot: [bladeRotX, 0, deg * -90],
+  rotOrder: bladeRotOrder,
+  fontSize: tailBladefontSize,
+  renderStyle: rStyle
+});
+
+tailBladeBlinkerOffset = 50;
+tailBladeABlinker = new n.VText({
+  string: '*',
+  pos: [tailBladeBlinkerOffset, 0, 0],
+  rot: [bladeRotX,0,0],
+  rotOrder: bladeRotOrder,
+  fontSize: tailBladefontSize,
+  color: blinkerColor,
+  renderStyle: rStyle
+});
+tailBladeBBlinker = new n.VText({
+  string: '*',
+  pos: [-tailBladeBlinkerOffset, 0, 0],
+  rot: [bladeRotX,0,pi],
+  rotOrder: bladeRotOrder,
+  fontSize: tailBladefontSize,
+  color: blinkerColor,
+  renderStyle: rStyle
+});
+
+
+s.add(orbit);
+orbit.add(body);
+body.add(bodySideL);
+body.add(bodySideR);
+body.add(windShieldL);
+body.add(windShieldR);
+body.add(windShieldC);
+body.add(landingGearL);
+body.add(landingGearR);
+body.add(bladeStock);
+body.add(bladeParent);
+bladeParent.add(bladeA);
+bladeParent.add(bladeB);
+bladeParent.add(bladeC);
+bladeParent.add(bladeD);
+bladeParent.add(bladeABlinker);
+bladeParent.add(bladeBBlinker);
+body.add(tailBase);
+tailBase.add(tailTip);
+tailTip.add(tailBladeParent);
+tailBladeParent.add(tailBladeA);
+tailBladeParent.add(tailBladeB);
+tailBladeParent.add(tailBladeC);
+tailBladeParent.add(tailBladeD);
+tailBladeParent.add(tailBladeABlinker);
+tailBladeParent.add(tailBladeBBlinker);
+
+
+animationController = {
+  update: function() {
+    if(s.mpos.x === 0 && s.mpos.y === 0){ //if the user hasn't moved the mouse
+      orbit.rot[2] -= deg;
+      //orbit.rot[1] = sin(orbit.rot[2] * 5) * 0.5; //the pilot's been drinking!
+      body.pos[2] = (cos(orbit.rot[2] * 3) * 50) + 60;
+    } else {
+      orbit.rot[2] = ((-s.mpos.x / 2) - 90) * deg;
+      body.pos[2] = -s.mpos.y;
+    }
+    bladeParent.rot[2] += -46 * deg;
+    tailBladeParent.rot[2] = bladeParent.rot[2];
+  }
+};
+
+s.add(animationController);
+  
+  </script>
+ </BODY>
+</HTML>

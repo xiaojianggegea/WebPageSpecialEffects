@@ -1,0 +1,504 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+ <HEAD>
+  <TITLE> New Document </TITLE>
+  <META NAME="Generator" CONTENT="EditPlus">
+  <META NAME="Author" CONTENT="">
+  <META NAME="Keywords" CONTENT="">
+  <META NAME="Description" CONTENT="">
+  <style>
+  body {
+  background: #242424;
+	color: #666;
+	font-size: 8pt;
+	font-family: sans-serif;
+	padding: 0;
+	margin: 0;
+}
+  </style>
+ </HEAD>
+
+ <BODY>
+ <canvas width="860" height="480" id="canvas"></canvas>
+<ul>
+  <li>Right - Accelerate</li>
+	<li>Left - Brake</li>
+	<li>Up - Jump</li>
+	<li>Down (while jumping or falling) - Swap Tracks</li>
+	<li>1 - Disable forward movement</li>
+	<li>2 - Enable forward movement</li>
+</ul>
+  <script>
+  var _debug = {
+  lockPlayerMovement: false,
+  showPlayerInfo: false
+};
+
+var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");
+
+var Shape = {};
+
+Shape.line = function() {
+  this.x1 = 0;
+	this.y1 = 0;
+	this.x2 = 0;
+	this.y2 = 0;
+	this.lineWidth = 2;
+	this.strokeStyle = "#000000";
+	
+	this.draw = function() {
+		context.beginPath();
+		context.moveTo(this.x1, this.y1);
+		context.lineTo(this.x2, this.y2);
+		context.lineWidth = this.lineWidth;
+		context.strokeStyle = this.strokeStyle;
+		context.stroke();
+	};
+};
+
+Shape.circle = function() {
+	this.x = 0;
+	this.y = 0;
+	this.radius = 0;
+	this.lineWidth = 2;
+	this.strokeStyle = "#000000";
+	this.fillStyle = "transparent";
+	
+	this.draw = function() {
+		context.beginPath();
+		context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+		context.fillStyle = this.fillStyle;
+		context.fill();
+		context.lineWidth = this.lineWidth;
+		context.strokeStyle = this.strokeStyle;
+		context.stroke();
+	};
+};
+
+Shape.text = function() {
+	this.x = 0;
+	this.y = 0;
+	this.font = "10pt sans-serif";
+	this.textAlign = "center";
+	this.textBaseline = "middle";
+	this.fillStyle = "black";
+	this.fillText = "";
+	
+	this.draw = function() {
+		context.font = this.font;
+		context.textAlign = this.center;
+		context.textBaseline = this.textBaseline;
+		context.fillStyle = this.fillStyle;
+		context.fillText(this.fillText, this.x, this.y);
+	};
+};
+
+Shape.rectangle = function() {
+	this.x = 0;
+	this.y = 0;
+	this.width = 0;
+	this.height = 0;
+	this.lineWidth = 2;
+	this.strokeStyle = "#000000";
+	this.fillStyle = "transparent";
+	
+	this.draw = function() {
+		context.rect(this.x, this.y, this.width, this.height);
+		context.fillStyle = this.fillStyle;
+		context.fill();
+	};
+};
+
+var Key = {
+	_pressed: {},
+
+	LEFT: 37,
+	UP: 38,
+	RIGHT: 39,
+	DOWN: 40,
+	SPACE: 32,
+	SHIFT: 16,
+	CTRL: 17,
+	CAM_LEFT: 190,
+	CAM_RIGHT: 188,
+	
+	DB_1: 49,
+	DB_2: 50,
+	DB_3: 51,
+	DB_4: 52,
+	DB_5: 53,
+	DB_6: 54,
+	DB_7: 55,
+	DB_8: 56,
+	DB_9: 57,
+
+	isDown: function(keyCode) {
+		return this._pressed[keyCode];
+	},
+
+	onKeydown: function(event) {
+		this._pressed[event.keyCode] = true;
+	},
+
+	onKeyup: function(event) {
+		delete this._pressed[event.keyCode];
+	}
+};
+window.addEventListener('keyup', function(event) { Key.onKeyup(event); }, false);
+window.addEventListener('keydown', function(event) { Key.onKeydown(event); }, false);
+
+var Camera = function(x, y) {
+	this.x = x;
+	this.y = y;
+	this.radius = 4;
+	this.velocity = {};
+	this.velocity.x = 0;
+	this.velocity.y = 0;
+	
+	this.addVelocity = function(x, y) {
+		this.velocity.x += x;
+		this.velocity.y += y;
+	};
+	
+	this.update = function(lines, player) {
+		this.x = player.x - (canvas.width / 2);
+	};
+};
+
+var Player = function(x, y, r) {
+	this.shapes = {};
+	this.shapes.circle = new Shape.circle();
+	this.shapes.radius = new Shape.line();
+	
+	this.x = x;
+	this.y = y;
+	this.radius = r;
+	this.velocity = {};
+	this.velocity.x = 0;
+	this.velocity.y = 0;
+	this.angle = 0;
+	this.level = 1;
+	
+	var maxJumpDist = 12;
+	var jumpDist = 0;
+	
+	var lasty = y;
+	var lastx = 0;
+	
+	// States
+	this.isJumping = false;
+	this.isFalling = false;
+	this.isSwappingLevels = false;
+	this.isAlive = true;
+	
+	// Adds velocity to the player
+	this.addVelocity = function(x, y) {
+		this.velocity.x += x;
+		this.velocity.y += y;
+	};
+	
+	// Collides with the world
+	this.collide = function(line, adjx, adjy) {
+		var run = line.x2 - line.x1;
+		var rise = line.y2 - line.y1;
+		
+		var slope = rise / run;
+		var intersect = (line.y1) - (line.x1 * slope);
+		var col = (slope * adjx) + intersect;
+		
+		var angle = radToDeg(Math.atan(rise / run));
+		this.angle = angle;
+		var normal = angle + 90;
+		
+		// Collide with track
+		if(lasty < col && adjy > col) {
+			this.y = col + (this.y - adjy);
+			this.isFalling = false;
+			this.isSwappingLevels = false;
+			jumpDist = 0;
+		} else {
+			if(!this.isJumping) {
+				this.isFalling = true;
+			}
+		}
+	};
+	
+	this.update = function(lines) {	
+		if(this.isAlive) {
+			// Accelerate
+			if(Key.isDown(Key.RIGHT))
+				this.addVelocity(_debug.lockPlayerMovement ? 0.2 : 0.1, 0, 0);
+			
+			// Brake
+			if(Key.isDown(Key.LEFT))
+				this.addVelocity(_debug.lockPlayerMovement ? -0.2 : -0.1, 0);
+				
+			// Jump
+			if(Key.isDown(Key.UP)) {
+				if(!this.isFalling && !this.isJumping) {
+					this.isJumping = true;
+				}
+			// Stop jumping
+			} else {
+				if(this.isJumping) {
+					this.isJumping = false;
+					jumpDist = 0;
+				}
+			}
+		}
+	
+		this.y += 7.5; // gravity
+		if(this.isAlive) this.velocity.x += _debug.lockPlayerMovement ? 0 : 0.2; // automatic accelerate
+		this.x += this.velocity.x;
+		this.y += this.velocity.y;
+		
+		// Decay velocity
+		this.velocity.x *= 0.985;
+		this.velocity.y *= 0.95;
+
+		// Collision point
+		var adjx = (this.radius * Math.cos((this.angle + 90) * Math.PI / 180)) + this.x;
+        var adjy = (this.radius * Math.sin((this.angle + 90) * Math.PI / 180)) + (this.y + 2); // 2px padding for stroke width
+		
+		// Finds the line the player is going to collide with
+		var playerPos;
+		if(lines[0].level === 2) // background track
+			playerPos = adjx / levelPrefs.width >> 0;
+		else // foreground track
+			playerPos = adjx / levelPrefs.width >> 0;
+		
+		// Loop through the lines and collide with the player
+		for(var i = 0; i < lines.length; i++) {
+			if(i === playerPos)
+				this.collide(lines[i], adjx, adjy);
+		}
+
+		// Swap tracks
+		if(!this.isSwappingLevels && !this.isJumping && this.isFalling && Key.isDown(Key.DOWN)) {
+			if(this.level === 1) {
+				this.level = 2;
+				this.isSwappingLevels = true;
+			} else {
+				this.level = 1;
+				this.isSwappingLevels = true;
+			}
+		}
+		
+		// Find the y direction the player is moving
+		var yvel;
+		var yfixed = this.y.toFixed(1);
+		if(yfixed < lasty) yvel = 1;
+		if(yfixed > lasty) yvel = -1;
+		if(yfixed == lasty) yvel = 0;
+		
+		// Apply extra gravity to keep player on slope during downward movement
+		// This prevents a bug where the player cannot jump while moving quickly
+		// downwards due to being in a "falling" state.
+		if(this.angle) {
+			if(yvel < 0 && (this.angle < -33 || this.angle > 33) && !this.isJumping) 
+				this.y += 2;
+		}
+		
+		// Jumping logic
+		if(this.isJumping) {
+			var jumpVel = -15;
+			jumpDist += 1;
+			
+			if(jumpDist > maxJumpDist) {
+				this.isJumping = false;
+				this.isFalling = true;
+				jumpDist = 0;
+			} else {
+				this.velocity.y = jumpVel;
+			}	
+		}
+		
+		// Die when falling off the edge of the world
+		if( adjy > canvas.height + (this.radius * 2) ||
+			adjx < 0 ||
+			adjx > lines.length * levelPrefs.width) {
+			this.isAlive = false;
+		}
+		
+		// Reset when the player dies
+		if(!this.isAlive) {
+			this.x = levelStart.x;
+			this.y = levelStart.y;
+			this.velocity = {x: 0, y: 0};
+			this.isAlive = true;
+		}
+		
+		lasty = this.y.toFixed(1); // last known y position
+	};
+	
+	this.draw = function(camera) {
+		this.shapes.circle.radius = this.radius;
+		this.shapes.circle.strokeStyle = "#218ae0";
+		this.shapes.circle.x = this.x - camera.x;
+		this.shapes.circle.y = this.y;
+		this.shapes.circle.draw();
+		
+		var x = (this.radius * Math.cos((this.angle + 90) * Math.PI / 180)) + this.x;
+        var y = (this.radius * Math.sin((this.angle + 90) * Math.PI / 180)) + this.y;
+		this.shapes.radius.x1 = this.x - camera.x;
+		this.shapes.radius.y1 = this.y;
+		this.shapes.radius.x2 = x - camera.x;
+		this.shapes.radius.y2 = y;
+		this.shapes.radius.strokeStyle = "#a7c6e0";
+		this.shapes.radius.draw();
+	};
+};
+
+var Line = function(x1, y1, x2, y2) {
+	this.shapes = {};
+	this.shapes.line = new Shape.line();
+
+	this.x1 = x1;
+	this.y1 = y1;
+	this.x2 = x2;
+	this.y2 = y2;
+	this.strokeStyle = "#ffffff";
+	this.level = 1;
+	
+	var lineClass = "line";
+	
+	this.setLevel = function(level) {
+		this.level = level;
+		lineClass = "line" + level;
+	};
+	
+	this.draw = function(camera) {
+		this.shapes.line.x1 = this.x1 - camera.x;
+		this.shapes.line.y1 = this.y1;
+		this.shapes.line.x2 = this.x2 - camera.x;
+		this.shapes.line.y2 = this.y2;
+		this.shapes.line.strokeStyle = this.strokeStyle;
+		this.shapes.line.draw();
+	};
+};
+
+function getNextPoint(frequency, offset, step, width, center) {
+	return (Math.sin(frequency * step + offset) * width + center) >> 0;
+}
+
+function radToDeg(rad) {
+	return rad * (180 / Math.PI);
+}
+
+var levelStart = {};
+levelStart.x = canvas.width / 2;
+levelStart.y = 100;
+
+var camera = new Camera(levelStart.x, levelStart.y);
+var background = new Shape.rectangle();
+	background.x = 0;
+	background.y = 0;
+	background.width = canvas.width;
+	background.height = canvas.height;
+	background.lineWidth = 0;
+	background.fillStyle = "#121212";
+var player = new Player(levelStart.x, levelStart.y, 20);
+	player.level = 2;
+var lines = [];
+var lines2 = [];
+
+var levelPrefs = {
+    width: 30,
+    length: 600,
+	frequency: 0.1,
+	wavelength: 32,
+	offset: 380,
+	numLines: 50
+};
+
+var levelPrefs2 = {
+    width: 30,
+    length: 600,
+	frequency: 0.2,
+	wavelength: 48,
+	offset: 260,
+	numLines: 50
+};
+
+for(var i = 0; i < levelPrefs2.length; i ++) {
+	var y = getNextPoint(levelPrefs2.frequency, levelPrefs2.frequency * Math.PI / 3, i, levelPrefs2.wavelength, levelPrefs2.offset);
+	var y2 = getNextPoint(levelPrefs2.frequency, levelPrefs2.frequency * Math.PI / 3, i + 1, levelPrefs2.wavelength, levelPrefs2.offset);
+	var line = new Line(i * levelPrefs2.width, y, i * levelPrefs2.width + levelPrefs2.width, y2);
+	line.setLevel(2);
+	line.strokeStyle = "#402712";
+	lines2.push(line);
+}
+
+for(var i = 0; i < levelPrefs.length; i ++) {
+	var y, y2;
+	if(i % 100 > 90 && i % 100 < 100 ) {
+		y = 800;
+		y2 = 800;
+	} else {
+		y = getNextPoint(levelPrefs.frequency, levelPrefs.frequency * Math.PI / 3, i, levelPrefs.wavelength, levelPrefs.offset);
+		y2 = getNextPoint(levelPrefs.frequency, levelPrefs.frequency * Math.PI / 3, i + 1, levelPrefs.wavelength, levelPrefs.offset);
+	}
+	var line = new Line(i * levelPrefs.width, y, i * levelPrefs.width + levelPrefs.width, y2);
+	line.setLevel(1);
+	line.strokeStyle = "#734720";
+	lines.push(line);
+}
+
+var update = function() {
+	context.save();
+
+	// Use the identity matrix while clearing the canvas
+	context.setTransform(1, 0, 0, 1, 0, 0);
+	context.clearRect(0, 0, canvas.width, canvas.height);
+
+	// Restore the transform
+	context.restore();
+	
+	camera.update(lines, player);
+	player.update(player.level === 2 ? lines2 : lines);
+	
+	if(Key.isDown(Key.DB_1)) _debug.lockPlayerMovement = true;
+	if(Key.isDown(Key.DB_2)) _debug.lockPlayerMovement = false;
+};
+
+var draw = function() {
+	background.draw();
+	
+	for(var i = 0; i < lines2.length; i++) {
+		lines2[i].draw(camera, true);
+	}
+	
+	player.draw(camera);
+		
+	for(var i = 0; i < lines.length; i++) {
+		lines[i].draw(camera, false);
+	}
+};
+
+var gameloop = function() {
+	update();
+	draw();
+};
+
+var animationFrame = window.requestAnimationFrame ||
+	window.webkitRequestAnimationFrame ||
+	window.mozRequestAnimationFrame    ||
+	window.oRequestAnimationFrame      ||
+	window.msRequestAnimationFrame     ||
+	null;
+
+if (animationFrame !== null) {
+	var recursiveAnim = function() {
+		gameloop();
+		animationFrame(recursiveAnim);
+	};
+
+	// start the gameloop
+	animationFrame(recursiveAnim);
+} else {
+	setInterval(gameloop, 1000.0 / 60.0);
+}
+  </script>
+ </BODY>
+</HTML>
